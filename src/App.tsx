@@ -1,25 +1,13 @@
-import React, { useState } from 'react';
-import UserList from './components/UserList';
-import LoginForm from './components/LoginForm';
+import React from 'react';
+import DashboardLayout from './components/dashboard/DashboardLayout';
+import Home from './components/Home';
 
-const App: React.FC = () => {
-  const [token, setToken] = useState<string | null>(null);
-
-  const handleLoginSuccess = (token: string) => {
-    setToken(token);
-    localStorage.setItem('authToken', token);
-  };
-
+function App() {
   return (
-    <div>
-      <h1>Welcome</h1>
-      {token ? (
-        <UserList />
-      ) : (
-        <LoginForm onLoginSuccess={handleLoginSuccess} />
-      )}
-    </div>
+    <DashboardLayout>
+      <Home />
+    </DashboardLayout>
   );
-};
+}
 
 export default App;
