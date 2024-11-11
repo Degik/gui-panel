@@ -1,7 +1,12 @@
 import React from 'react';
 import styles from './SmartFactoryDashboard.module.css';
 
-const Header: React.FC = () => {
+interface HeaderProps {
+  username?: string;
+  role?: string;
+}
+
+const Header: React.FC<HeaderProps> = ({username, role}) => {
   return (
     <header className={styles.dashboardHeader}>
       <nav className={styles.iconBreadcrumb}>
@@ -31,7 +36,7 @@ const Header: React.FC = () => {
         </button>
         <div className={styles.userProfile}>
           <img src="https://cdn.builder.io/api/v1/image/assets/TEMP/57e79c8bd3d39936cea39228d1ee31a14473b1dc9bcd470bf4db445be31efd89?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130" alt="" className={styles.userAvatar} />
-          <span className={styles.userName}>Factory Floor Manager</span>
+            <span className={styles.userName}>{username} ({role})</span>
         </div>
       </div>
     </header>

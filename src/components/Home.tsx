@@ -3,26 +3,33 @@ import Header from './dashboard/Header';
 import Sidebar from './dashboard/Sidebar';
 import WelcomeSection from './dashboard/WelcomeSection';
 import FeatureCard from './dashboard/FeatureCard';
+import useFactoryData from '../api/login';
 import styles from './dashboard/SmartFactoryDashboard.module.css';
 
-const Home = () => {
+interface HomeProps {
+    username: string;
+    role: string;
+}
+
+const Home: React.FC<HomeProps> = ({ username, role }) => {
+    const data = useFactoryData();
+
     return (
         <div className={styles.landingPage}>
-            <Header />
+            <Header username={username} role={role} />
             <div className={styles.mainContent}>
                 <Sidebar />
                 <div className={styles.dashboardContent}>
-                    <WelcomeSection/>
+                    <WelcomeSection username={username} />
                     <div className={styles.featureGrid}>
                         <FeatureCard 
-                            title="Visualize Data"
+                            title="Visualize Data" 
                             buttonText="Take me there" 
                         />
                         <FeatureCard 
-                            title="Notifications"
+                            title="Notifications" 
                             buttonText="Manage notification settings" 
                         />
-                        {/* Add others card */}
                     </div>
                 </div>
             </div>
