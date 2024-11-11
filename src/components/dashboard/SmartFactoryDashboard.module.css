@@ -1,0 +1,260 @@
+.landingPage {
+    border-radius: 24px;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  
+  .dashboardHeader {
+    background-color: #fff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    min-height: 76px;
+    width: 100%;
+    max-width: 1217px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+  }
+  
+  .iconBreadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .iconButton {
+    border-radius: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    position: relative;
+  }
+  
+  .iconImg {
+    width: 20px;
+    height: 20px;
+  }
+  
+  .tooltip {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 8px;
+    display: none;
+    white-space: nowrap;
+  }
+  
+  .iconButton:hover .tooltip,
+  .iconButton:focus .tooltip {
+    display: flex;
+  }
+  
+  .tooltipText,
+  .tooltipShortcut {
+    font-size: 12px;
+  }
+  
+  .tooltipShortcut {
+    opacity: 0.4;
+    margin-left: 4px;
+  }
+  
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+  
+  .breadcrumbButton {
+    background: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+  
+  .breadcrumbSeparator {
+    color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .userActions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .userProfile {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .userAvatar {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+  
+  .userName {
+    font-size: 14px;
+    color: #000;
+  }
+  
+  .mainContent {
+    display: flex;
+    width: 100%;
+    max-width: 1081px;
+    margin: 0 auto;
+  }
+  
+  .dashboardSidebar {
+    background-color: #fff;
+    border-right: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    width: 22%;
+    padding: 16px 12px;
+  }
+  
+  .sidebarSection {
+    margin-bottom: 20px;
+  }
+  
+  .sidebarDivider {
+    border: none;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    margin: 12px 0;
+  }
+  
+  .sidebarButtons {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .sidebarButton {
+    background: none;
+    border: none;
+    color: rgba(0, 0, 0, 0.4);
+    cursor: pointer;
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+  
+  .sidebarHeading {
+    color: rgba(0, 0, 0, 0.4);
+    font-size: 14px;
+    font-weight: normal;
+    margin-bottom: 8px;
+    padding: 4px 12px;
+  }
+  
+  .sidebarLink {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #000;
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 12px;
+  }
+  
+  .sidebarLink:hover,
+  .sidebarLink:focus {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .sidebarIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .dashboardContent {
+    flex-grow: 1;
+    padding: 40px;
+  }
+  
+  .welcomeSection {
+    margin-bottom: 78px;
+  }
+  
+  .welcomeTitle {
+    color: #000;
+    font-size: 24px;
+    letter-spacing: -0.48px;
+  }
+  
+  .featureGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .featureCard {
+    border-radius: 40px;
+    background-color: #fff;
+    border: 4px solid #000;
+    padding: 35px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .featureDescription {
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 16px;
+    margin-bottom: 36px;
+  }
+  
+  .featureButton {
+    min-width: 80px;
+    justify-content: center;
+    border-radius: 16px;
+    background: #ece6f0;
+    box-shadow: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+    color: #65558f;
+    border: none;
+    padding: 16px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .featureButton:hover,
+  .featureButton:focus {
+    background-color: #d9d0e3;
+  }
+  
+  @media (max-width: 991px) {
+    .dashboardHeader,
+    .mainContent {
+      max-width: 100%;
+    }
+  
+    .dashboardSidebar {
+      width: 100%;
+      margin-top: 40px;
+      padding-bottom: 100px;
+    }
+  
+    .featureGrid {
+      grid-template-columns: 1fr;
+    }
+  
+    .featureCard {
+      padding: 20px;
+    }
+  }
