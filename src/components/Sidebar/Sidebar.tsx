@@ -11,7 +11,7 @@ interface SidebarProps {
 }
 
 const DashboardSidebar = () => {
-  // Dati per le sezioni della sidebar
+  // Data for the sidebar
   const favoritesItems = [
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/5a1623533feb957ed0356b69b19c86481c64ebf03b9a3e91420e6ce2924e91bd?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'Overview', path: '/' },
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/5a1623533feb957ed0356b69b19c86481c64ebf03b9a3e91420e6ce2924e91bd?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'March Reports', path: '/march-reports' },

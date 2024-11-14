@@ -1,8 +1,9 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Routes, Route } from 'react-router-dom';
 import styles from '../styles/Dashboard.module.css';
 import DashboardSidebar from './Sidebar/Sidebar';
 import Header from './Header/Header';
+import UserSettings from './UserSettings/UserSettings';
 
 interface DashboardProps {
   username: string;
@@ -15,20 +16,20 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
 
   // Map the section name to the path
   const sectionMap: { [key: string]: string } = {
-    '/': 'Home',
-    '/march-reports': 'March Reports',
-    '/user-settings': 'User Settings',
-    '/reports': 'Reports',
-    '/data-view': 'Data View',
-    '/log': 'Log',
-    '/production-lines': 'Production Lines',
-    '/dashboards/overview': 'Dashboards Overview',
-    '/dashboards/production-lines': 'Production Lines Dashboards',
-    '/dashboards/line-1': 'Production Line #1',
-    '/dashboards/saved-folder': 'Saved Dashboard Folder',
+    '': 'Home',
+    'march-reports': 'March Reports',
+    'user-settings': 'User Settings',
+    'reports': 'Reports',
+    'data-view': 'Data View',
+    'log': 'Log',
+    'production-lines': 'Production Lines',
+    'dashboards/overview': 'Dashboards Overview',
+    'dashboards/production-lines': 'Production Lines Dashboards',
+    'dashboards/line-1': 'Production Line #1',
+    'dashboards/saved-folder': 'Saved Dashboard Folder',
   };
 
-  // Determina la sezione e il percorso
+  // Take the section name from the map
   const section = sectionMap[location.pathname] || 'Unknown Section';
   const path = location.pathname;
 
@@ -40,7 +41,7 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
         //companyName="Smart Factory"
       />
 
-      {/* Contenuto principale */}
+      {/* PPrincipal content */}
       <main className={styles.mainContent}>
         {/* Header */}
         <Header
@@ -54,10 +55,13 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
           role={role}
         />
 
-        {/* Contenuto dinamico */}
+        {/* Dynamic routes */}
         <div className={styles.content}>
-          {/* Qui puoi rendere il contenuto dinamico */}
-          <p>Benvenuto nella tua Smart Factory. Seleziona una sezione dalla sidebar.</p>
+          <Routes>
+            {/* <Route path="/" element={<HomeContent />} /> */}
+            <Route path="/user-settings" element={<UserSettings />} />
+            {/* Add others routes */}
+          </Routes>
         </div>
       </main>
     </div>

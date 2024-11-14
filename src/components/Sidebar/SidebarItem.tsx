@@ -12,7 +12,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, path }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(path); // Naviga al percorso specificato
+    navigate(path); // Navigate to the path when the item is clicked
   };
 
   return (
