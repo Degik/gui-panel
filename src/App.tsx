@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import Home from './components/Home';
+import DashboardLayout from './components/Dashboard';
 import LoginForm from './components/LoginForm';
+import { Dashboard } from '@mui/icons-material';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -14,7 +15,7 @@ const App = () => {
     return (
         <div>
             {isAuthenticated ? (
-                <Home username={username} role="Floor Factory Menager" />
+                <DashboardLayout username={username} path="/" section="Home" role="Floor Factory Menager" />
             ) : (
                 <LoginForm onLogin={handleLogin} />
             )}
