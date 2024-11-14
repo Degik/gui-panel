@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import styles from './SidebarItem.module.css';
+import styles from './styles/SidebarItem.module.css';
 
 interface SidebarItemProps {
   icon: string;

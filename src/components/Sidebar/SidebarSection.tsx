@@ -1,6 +1,6 @@
 import React from 'react';
 import SidebarItem from './SidebarItem';
-import styles from './SidebarSection.module.css';
+import styles from './styles/SidebarSection.module.css';
 
 interface SidebarSectionProps {
   title: string;
