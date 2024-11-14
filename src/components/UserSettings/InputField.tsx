@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './UserSettings.module.css';
+import styles from './styles/UserSettings.module.css';
 
 interface InputFieldProps {
   label: string;
