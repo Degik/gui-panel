@@ -1,24 +1,22 @@
 import React from 'react';
-import styles from './styles/SidebarSection.module.css';
 import SidebarItem from './SidebarItem';
+import styles from './SidebarSection.module.css';
 
 interface SidebarSectionProps {
   title: string;
-  items: Array<{ icon: string; text: string }>;
+  items: { icon: string; text: string; path: string }[];
 }
 
 const SidebarSection: React.FC<SidebarSectionProps> = ({ title, items }) => {
   return (
-    <section className={styles.sidebarSection}>
-      <h2 className={styles.sectionTitle}>{title}</h2>
-      <ul className={styles.itemList}>
+    <div className={styles.sidebarSection}>
+      <h3 className={styles.sectionTitle}>{title}</h3>
+      <div className={styles.sectionItems}>
         {items.map((item, index) => (
-          <li key={index}>
-            <SidebarItem icon={item.icon} text={item.text} />
-          </li>
+          <SidebarItem key={index} icon={item.icon} text={item.text} path={item.path} />
         ))}
-      </ul>
-    </section>
+      </div>
+    </div>
   );
 };
 

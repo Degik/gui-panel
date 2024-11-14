@@ -1,16 +1,24 @@
 import React from 'react';
-import styles from './styles/SidebarItem.module.css';
+import { useNavigate } from 'react-router-dom';
+import styles from './SidebarItem.module.css';
 
 interface SidebarItemProps {
   icon: string;
   text: string;
+  path: string;
 }
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text }) => {
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, path }) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate(path); // Naviga al percorso specificato
+  };
+
   return (
-    <div className={styles.sidebarItem}>
-      <img src={icon} alt="" className={styles.itemIcon} />
-      <span className={styles.itemText}>{text}</span>
+    <div className={styles.sidebarItem} onClick={handleClick}>
+      <img src={icon} alt={text} className={styles.icon} />
+      <span className={styles.text}>{text}</span>
     </div>
   );
 };

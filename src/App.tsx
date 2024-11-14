@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import DashboardLayout from './components/Dashboard';
 import LoginForm from './components/LoginForm';
-import { Dashboard } from '@mui/icons-material';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,13 +13,28 @@ const App = () => {
     };
 
     return (
-        <div>
-            {isAuthenticated ? (
-                <DashboardLayout username={username} path="/" section="Home" role="Floor Factory Menager" />
-            ) : (
-                <LoginForm onLogin={handleLogin} />
-            )}
-        </div>
+        <Router>
+            <div>
+                {isAuthenticated ? (
+                    <Routes>
+                        {/* Rotta principale per la dashboard */}
+                        <Route
+                            path="/*"
+                            element={<DashboardLayout username={username} role="Floor Factory Manager" />}
+                        />
+                        {/* Reindirizza qualsiasi rotta non valida */}
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                ) : (
+                    <Routes>
+                        {/* Rotta per il login */}
+                        <Route path="/" element={<LoginForm onLogin={handleLogin} />} />
+                        {/* Reindirizza qualsiasi rotta non valida */}
+                        <Route path="*" element={<Navigate to="/" />} />
+                    </Routes>
+                )}
+            </div>
+        </Router>
     );
 };
 
