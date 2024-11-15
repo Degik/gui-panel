@@ -1,39 +1,72 @@
-.reportBuilderKpi {
-    background-color: #fff;
+.kpiSelectorContainer {
+    background-color: rgba(241, 241, 241, 0.45);
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 43px 78px 17px 22px;
+    padding: 10px 80px 22px 21px;
+    border: 1px solid rgba(0, 0, 0, 0.11);
   }
   
   @media (max-width: 991px) {
-    .reportBuilderKpi {
+    .kpiSelectorContainer {
       padding: 0 20px;
     }
   }
   
-  .kpiContainer {
-    align-self: stretch;
-    display: flex;
+  .kpiSelectorWrapper {
     width: 100%;
-    gap: 40px 48px;
+    max-width: 807px;
   }
   
   @media (max-width: 991px) {
-    .kpiContainer {
+    .kpiSelectorWrapper {
       max-width: 100%;
     }
   }
   
-  .kpiSection {
+  .selectorRow {
+    gap: 20px;
     display: flex;
+  }
+  
+  @media (max-width: 991px) {
+    .selectorRow {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+    }
+  }
+  
+  .selectorColumn {
+    display: flex;
+    flex-direction: column;
+    line-height: normal;
+    width: 33%;
+    margin-left: 0;
+  }
+  
+  @media (max-width: 991px) {
+    .selectorColumn {
+      width: 100%;
+    }
+  }
+  
+  .selectorContent {
+    display: flex;
+    flex-grow: 1;
     padding-bottom: 18px;
     flex-direction: column;
     color: var(--sds-color-text-default-default);
     font: var(--sds-typography-body-font-weight-regular) var(--sds-typography-body-size-medium) / 1.4 var(--sds-typography-body-font-family);
   }
   
-  .selectKpi {
+  @media (max-width: 991px) {
+    .selectorContent {
+      margin-top: 29px;
+    }
+  }
+  
+  .selectWrapper {
     display: flex;
     min-height: 112px;
     width: 100%;
@@ -41,12 +74,12 @@
     justify-content: flex-start;
   }
   
-  .description {
+  .selectorDescription {
     color: var(--sds-color-text-default-secondary);
     margin-top: 8px;
   }
   
-  .select {
+  .selectBox {
     border-radius: 8px;
     background-color: #fff;
     display: flex;
@@ -58,18 +91,18 @@
     gap: 8px;
     line-height: 1;
     justify-content: flex-start;
-    padding: 12px 12px 12px 16px;
+    padding: 12px 16px;
     border: 1px solid #d9d9d9;
   }
   
-  .value {
+  .selectValue {
     align-self: stretch;
     flex: 1;
-    flex-basis: 0%;
+    flex-basis: 0;
     margin: auto 0;
   }
   
-  .icon {
+  .selectIcon {
     aspect-ratio: 1;
     object-fit: contain;
     object-position: center;
@@ -85,7 +118,7 @@
     width: 28px;
     align-self: flex-end;
     z-index: 10;
-    margin: -46px 39px 0 0;
+    margin: -46px 36px 0 0;
   }
   
   @media (max-width: 991px) {
@@ -94,61 +127,7 @@
     }
   }
   
-  .timeFrameSection {
-    flex-grow: 1;
-    flex-basis: auto;
-  }
-  
-  @media (max-width: 991px) {
-    .timeFrameSection {
-      max-width: 100%;
-    }
-  }
-  
-  .timeFrameContainer {
-    gap: 20px;
-    display: flex;
-  }
-  
-  @media (max-width: 991px) {
-    .timeFrameContainer {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 0px;
-    }
-  }
-  
-  .column {
-    display: flex;
-    flex-direction: column;
-    line-height: normal;
-    width: 50%;
-    margin-left: 0px;
-  }
-  
-  @media (max-width: 991px) {
-    .column {
-      width: 100%;
-    }
-  }
-  
-  .selectTime {
-    display: flex;
-    height: 98px;
-    width: 100%;
-    flex-direction: column;
-    color: var(--sds-color-text-default-default);
-    justify-content: flex-start;
-    font: var(--sds-typography-body-font-weight-regular) var(--sds-typography-body-size-medium) / 1.4 var(--sds-typography-body-font-family);
-  }
-  
-  @media (max-width: 991px) {
-    .selectTime {
-      margin-top: 21px;
-    }
-  }
-  
-  .graphTypeContainer {
+  .graphTypeWrapper {
     display: flex;
     margin-top: 46px;
     width: 100%;
@@ -158,12 +137,12 @@
   }
   
   @media (max-width: 991px) {
-    .graphTypeContainer {
+    .graphTypeWrapper {
       margin-top: 40px;
     }
   }
   
-  .graphType {
+  .graphTypeSelector {
     border-radius: 20px;
     background-color: #fff;
     display: flex;
@@ -175,7 +154,7 @@
     border: 1px solid #d9d9d9;
   }
   
-  .graphIcon {
+  .graphTypeIcon {
     aspect-ratio: 1;
     object-fit: contain;
     object-position: center;
@@ -184,7 +163,7 @@
     margin: auto 0;
   }
   
-  .divider {
+  .graphTypeDivider {
     aspect-ratio: 0.02;
     object-fit: contain;
     object-position: center;
@@ -193,19 +172,38 @@
     margin: auto 0;
   }
   
-  .optionsContainer {
+  .filterOptions {
+    z-index: 10;
     display: flex;
-    margin-top: 11px;
-    gap: 12px;
-    color: #000;
-    font: 400 14px/1 var(--Font-family-Inter, Inter);
+    align-items: flex-start;
+    gap: 21px;
+    font-size: 14px;
+    font-weight: 400;
   }
   
-  .moreOptions {
+  .filterOptionsWrapper {
+    display: flex;
+    gap: 6px;
+  }
+  
+  .filterOptionsContent {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .moreOptionsWrapper {
+    display: flex;
+    gap: 12px;
+    font-family: var(--Font-family-Inter, Inter);
+    color: #000;
+    line-height: 1;
+  }
+  
+  .moreOptionsText {
     font-feature-settings: "ss01" on, "cv01" on;
   }
   
-  .optionsIcon {
+  .moreOptionsIcon {
     aspect-ratio: 1;
     object-fit: contain;
     object-position: center;
@@ -214,22 +212,48 @@
     margin-top: 4px;
   }
   
-  .bottomIcon {
-    aspect-ratio: 1;
-    object-fit: contain;
-    object-position: center;
-    width: 36px;
-    margin-top: 33px;
+  .filterByText {
+    color: #000;
+    font-family: Inter, sans-serif;
+    text-align: center;
+    align-self: flex-start;
+    margin-top: 6px;
   }
   
-  .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  .siteText {
+    color: #000;
+    font-family: Inter, sans-serif;
+    text-align: center;
+    align-self: flex-end;
+    margin-top: 26px;
+  }
+  
+  .filterDropdown {
+    aspect-ratio: 4.76;
+    object-fit: contain;
+    object-position: center;
+    width: 138px;
+    background-color: #fff;
+    margin-top: 20px;
+    max-width: 100%;
+  }
+  
+  .filterRow {
+    display: flex;
+    margin-top: 20px;
+    gap: 9px;
+    font-family: Inter, sans-serif;
+    color: #000;
+    text-align: center;
+  }
+  
+  .filterLabel {
+    flex-grow: 1;
+    margin: auto 0;
+  }
+  
+  @media (max-width: 991px) {
+    .filterRow {
+      white-space: initial;
+    }
   }
