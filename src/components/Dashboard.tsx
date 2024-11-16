@@ -1,12 +1,15 @@
 import React from 'react';
 import { useLocation, Routes, Route } from 'react-router-dom';
 import styles from '../styles/Dashboard.module.css';
+
+// Components
 import DashboardSidebar from './Sidebar/Sidebar';
 import Header from './Header/Header';
 
 // Import the sections
 import UserSettings from './UserSettings/UserSettings';
 import DataView from './DataView/DataView';
+import Home from './Home';
 
 interface DashboardProps {
   username: string;
@@ -61,9 +64,9 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
         {/* Dynamic routes */}
         <div className={styles.content}>
           <Routes>
-            {/* <Route path="/" element={<HomeContent />} /> */}
-            <Route path="/user-settings" element={<UserSettings />} />
-            <Route path="/data-view" element={<DataView />} />
+            <Route path="home" element={<Home />} />
+            <Route path="user-settings" element={<UserSettings />} />
+            <Route path="data-view" element={<DataView />} />
             {/* Add others routes */}
           </Routes>
         </div>
