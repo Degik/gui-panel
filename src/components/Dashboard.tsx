@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, Routes, Route } from 'react-router-dom';
+import { useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import styles from '../styles/Dashboard.module.css';
 
 // Components
@@ -9,7 +9,7 @@ import Header from './Header/Header';
 // Import the sections
 import UserSettings from './UserSettings/UserSettings';
 import DataView from './DataView/DataView';
-import Home from './Home';
+import Home from './Home/Home';
 
 interface DashboardProps {
   username: string;
@@ -22,11 +22,11 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
 
   // Map the section name to the path
   const sectionMap: { [key: string]: string } = {
-    '': 'Home',
-    'march-reports': 'March Reports',
+    'home': 'Home',
     'user-settings': 'User Settings',
-    'reports': 'Reports',
     'data-view': 'Data View',
+    'march-reports': 'March Reports',
+    'reports': 'Reports',
     'log': 'Log',
     'production-lines': 'Production Lines',
     'dashboards/overview': 'Dashboards Overview',
@@ -36,18 +36,15 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
   };
 
   // Take the section name from the map
-  const section = sectionMap[location.pathname] || 'Unknown Section';
+  const section = sectionMap[location.pathname.replace('/', '')] || 'Unknown Section';
   const path = location.pathname;
 
   return (
     <div className={styles.dashboardContainer}>
       {/* Sidebar */}
-      <DashboardSidebar
-        //logo="https://cdn.builder.io/api/v1/image/assets/TEMP/58732b88-def1-4101-b19d-67b6a972b6f3?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130"
-        //companyName="Smart Factory"
-      />
+      <DashboardSidebar />
 
-      {/* PPrincipal content */}
+      {/* Main content */}
       <main className={styles.mainContent}>
         {/* Header */}
         <Header
@@ -64,6 +61,8 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
         {/* Dynamic routes */}
         <div className={styles.content}>
           <Routes>
+            {/* Default route redirects to Home */}
+            <Route path="/" element={<Navigate to="home" replace />} />
             <Route path="home" element={<Home />} />
             <Route path="user-settings" element={<UserSettings />} />
             <Route path="data-view" element={<DataView />} />
