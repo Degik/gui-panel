@@ -45,7 +45,7 @@ const ChatAssistant: React.FC = () => {
       {/* Bottone per aprire/chiudere la chat */}
       <button className={styles.chatButton} onClick={toggleChat}>
         <img
-          src="./styles/icons/ChatsTeardrop.svg" // Inserisci l'icona della chat
+          src={require('./styles/icons/ChatsTeardrop.svg').default}
           alt="Chat Icon"
         />
       </button>
