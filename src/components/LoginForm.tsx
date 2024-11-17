@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
-import { secureLogin } from '../api/'; // Importa il servizio API
+import { secureLogin } from '../api/security/securityService'; // Importa il servizio API
 import styles from '../styles/LoginForm.module.css';
 
 interface LoginFormProps {
-  onLogin: (username: string) => void;
-}
+
+    onLogin: (username: string, token: string) => void;
+  
+  }
 
 const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
   const [username, setUsername] = useState('');
@@ -19,7 +21,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
       const data = await secureLogin(username, password); // Chiamata all'API
       console.log('Risultato API:', data);
       if (data.success) {
-        onLogin(username); // Notifica il login riuscito
+        onLogin(username, password); // Notifica il login riuscito
       } else {
         alert('Credenziali non valide!');
       }

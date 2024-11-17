@@ -4,20 +4,6 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-
-import express from 'express';
-// API modules
-import api from './api';
-
-
-const app = express();
-app.use('/api', api);
-
-const PORT = 3000;
-app.listen(PORT, () => {
-  console.log(`Server running on http://0.0.0.0:${PORT}`);
-});
-
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
