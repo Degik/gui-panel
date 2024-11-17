@@ -3,6 +3,7 @@ import { useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import styles from '../styles/Dashboard.module.css';
 
 // Components
+import ChatAssistant from './ChatAssistent/ChatAssistent';
 import DashboardSidebar from './Sidebar/Sidebar';
 import Header from './Header/Header';
 
@@ -70,6 +71,10 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
           </Routes>
         </div>
       </main>
+        
+        {/* Chat Assistant */}
+        <ChatAssistant />
+        
     </div>
   );
 };
