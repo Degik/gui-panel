@@ -23,11 +23,11 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
 
   // Map the section name to the path
   const sectionMap: { [key: string]: string } = {
-    '': 'Home',
-    '': 'User Settings',
-    '': 'Data View',
-    '': 'Reports',
-    '': 'Log',
+    'home': 'Home',
+    'user-settings': 'User Settings',
+    'data-view': 'Data View',
+    'reports': 'Reports',
+    'log': 'Log',
     'production-lines': 'Production Lines',
     'dashboards/overview': 'Dashboards Overview',
     'dashboards/production-lines': 'Production Lines Dashboards',
