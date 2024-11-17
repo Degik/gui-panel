@@ -6,10 +6,12 @@ import LoginForm from './components/LoginForm';
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [username, setUsername] = useState('');
+    const [token, setToken] = useState<string | null>(null);
 
-    const handleLogin = (username: string) => {
+    const handleLogin = (username: string, token: string) => {
         setIsAuthenticated(true);
         setUsername(username);
+        setToken(token);
     };
 
     return (

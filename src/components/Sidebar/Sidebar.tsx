@@ -34,6 +34,16 @@ const DashboardSidebar = () => {
 
   return (
     <aside className={styles.sidebar}>
+      {/* Company Logo */}
+      <div className={styles.logoContainer}>
+        <img
+          src={require('./icons/logo.svg').default}
+          alt="Company Logo"
+          className={styles.logo}
+        />
+        {/*<h1 className={styles.companyName}>Smart Factory</h1>*/}
+      </div>
+
       <SidebarSection title="Favorites" items={favoritesItems} />
       <SidebarSection title="Sections" items={sectionsItems} />
       <SidebarSection title="Dashboards" items={dashboardsItems} />
