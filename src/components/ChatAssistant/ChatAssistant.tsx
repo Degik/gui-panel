@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './styles/ChatAssistant.module.css';
+import classNames from 'classnames';
 
 interface Message {
   id: number;
@@ -12,80 +12,92 @@ const ChatAssistant: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
 
-  const toggleChat = () => {
-    setIsChatOpen(!isChatOpen);
-  };
+  const toggleChat = () => setIsChatOpen((prev) => !prev);
 
   const handleSendMessage = () => {
-    if (newMessage.trim() === '') return;
+    if (!newMessage.trim()) return;
 
-    // Aggiungi il messaggio dell'utente alla chat
-    const userMessage: Message = {
-      id: messages.length + 1,
-      sender: 'user',
-      content: newMessage,
-    };
-
-    setMessages((prevMessages) => [...prevMessages, userMessage]);
+    const userMessage: Message = { id: messages.length + 1, sender: 'user', content: newMessage };
+    setMessages((prev) => [...prev, userMessage]);
     setNewMessage('');
 
-    // Simula una risposta dell'assistente virtuale (da sostituire con API)
     setTimeout(() => {
       const assistantMessage: Message = {
         id: messages.length + 2,
         sender: 'assistant',
         content: `This is a placeholder response for: "${newMessage}"`,
       };
-      setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-    }, 1000); // Simula un ritardo di risposta
+      setMessages((prev) => [...prev, assistantMessage]);
+    }, 1000);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') handleSendMessage();
   };
 
   return (
-    <div className={styles.chatAssistant}>
-      {/* Bottone per aprire/chiudere la chat */}
-      <button className={styles.chatButton} onClick={toggleChat}>
-        <img
-          src={require('./styles/icons/ChatsTeardrop.svg').default}
-          alt="Chat Icon"
-        />
-      </button>
+      <div className="fixed bottom-4 right-4 z-50">
+        {/* Chat Toggle Button */}
+        <button
+            className="w-16 h-16 bg-blue-600 text-white rounded-full shadow-md flex items-center justify-center hover:scale-110 transition-transform"
+            onClick={toggleChat}
+            aria-label={isChatOpen ? 'Close chat' : 'Open chat'}
+        >
+          <img src="/icons/chat-icon.svg" alt="Chat Icon" className="w-8 h-8" />
+        </button>
 
-      {/* Finestra di chat */}
-      {isChatOpen && (
-        <div className={styles.chatWindow}>
-          <div className={styles.chatHeader}>
-            <h3>Virtual Assistant</h3>
-            <button onClick={toggleChat} className={styles.closeButton}>×</button>
-          </div>
-          <div className={styles.chatContent}>
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={
-                  message.sender === 'user'
-                    ? styles.userMessage
-                    : styles.assistantMessage
-                }
-              >
-                {message.content}
+        {/* Chat Window */}
+        {isChatOpen && (
+            <div className="fixed bottom-24 right-4 w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col">
+              {/* Chat Header */}
+              <div className="bg-blue-600 text-white px-4 py-2 flex justify-between items-center rounded-t-lg">
+                <h3 className="text-lg font-semibold">Virtual Assistant</h3>
+                <button
+                    onClick={toggleChat}
+                    className="text-white text-xl font-bold hover:text-gray-300"
+                    aria-label="Close chat"
+                >
+                  ×
+                </button>
               </div>
-            ))}
-          </div>
-          <div className={styles.chatInputContainer}>
-            <input
-              type="text"
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              placeholder="Type your message..."
-              className={styles.chatInput}
-            />
-            <button onClick={handleSendMessage} className={styles.sendButton}>
-              Send
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+
+              {/* Chat Messages */}
+              <div className="flex-grow p-4 overflow-y-auto bg-gray-50 space-y-2">
+                {messages.map((message) => (
+                    <div
+                        key={message.id}
+                        className={classNames(
+                            'max-w-[70%] px-4 py-2 rounded-lg text-sm break-words',
+                            message.sender === 'user'
+                                ? 'self-end bg-blue-500 text-white'
+                                : 'self-start bg-gray-200 text-gray-800'
+                        )}
+                    >
+                      {message.content}
+                    </div>
+                ))}
+              </div>
+
+              {/* Chat Input */}
+              <div className="flex p-2 border-t">
+                <input
+                    type="text"
+                    className="flex-grow border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Type your message..."
+                />
+                <button
+                    onClick={handleSendMessage}
+                    className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+                >
+                  Send
+                </button>
+              </div>
+            </div>
+        )}
+      </div>
   );
 };
 

@@ -1,48 +1,65 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import KpiSelector from '../KpiSelector/KpiSelector';
 import Chart from '../Chart/Chart';
-import styles from './styles/DataView.module.css';
 
 const DataView: React.FC = () => {
-  const [kpi, setKpi] = useState('Idle time'); // KPI selezionato
-  const [timeFrame, setTimeFrame] = useState('Month'); // Intervallo di tempo selezionato
-  const [graphType, setGraphType] = useState('Bar'); // Tipo di grafico selezionato
-  const [filters, setFilters] = useState({ site: 'All', productionLine: 'All', machines: 'All' }); // Filtri selezionati
-  const [chartData, setChartData] = useState<any[]>([]); // Dati del grafico
+    const [kpi, setKpi] = useState('Idle time'); // KPI selezionato
+    const [timeFrame, setTimeFrame] = useState('Month'); // Intervallo di tempo selezionato
+    const [graphType, setGraphType] = useState('Bar'); // Tipo di grafico selezionato
+    const [filters, setFilters] = useState({site: 'All', productionLine: 'All', machines: 'All'}); // Filtri selezionati
+    const [chartData, setChartData] = useState<any[]>([]); // Dati del grafico
 
-  // Funzione per simulare una chiamata API
-  const fetchChartData = async () => {
-    console.log('Fetching data with:', { kpi, timeFrame, graphType, filters });
-    // Simulazione di dati del grafico
-    const simulatedData = [
-      { name: 'Machine 1', value: Math.random() * 100 },
-      { name: 'Machine 2', value: Math.random() * 100 },
-      { name: 'Machine 3', value: Math.random() * 100 },
-    ];
-    setChartData(simulatedData);
-  };
+    // Funzione per simulare una chiamata API
+    const fetchChartData = async () => {
+        console.log('Fetching data with:', { kpi, timeFrame, graphType, filters });
 
-  return (
-    <div className={styles.dataViewContainer}>
-      {/* Selettore KPI */}
-      <KpiSelector
-        kpi={kpi}
-        setKpi={setKpi}
-        timeFrame={timeFrame}
-        setTimeFrame={setTimeFrame}
-        graphType={graphType}
-        setGraphType={setGraphType}
-        filters={filters}
-        setFilters={setFilters}
-        onGenerate={fetchChartData} // Chiama l'API quando viene cliccato il pulsante "Generate Chart"
-      />
+        const machines = ['Machine A', 'Machine B', 'Machine C', 'Machine D', 'Machine E'];
 
-      {/* Visualizzazione del Grafico */}
-      <section className={styles.chartContainer}>
-        <Chart data={chartData} graphType={graphType} />
-      </section>
-    </div>
-  );
+        if (graphType === 'Line' || graphType === 'Area') {
+            // Create time-series data
+            const timeSeriesData = Array.from({ length: 10 }, (_, index) => {
+                const timestamp = new Date(Date.now() - index * 3600 * 1000).toISOString(); // Hourly data
+                const entry: any = { timestamp }; // Initialize with timestamp
+                machines.forEach((machine) => {
+                    entry[machine] = Math.round(Math.random() * 100); // Random value for each machine
+                });
+                return entry;
+            });
+
+            setChartData(timeSeriesData);
+        } else {
+            // Create categorical data
+            const categoricalData = machines.map((machine) => ({
+                name: machine,
+                value: Math.round(Math.random() * 100),
+            }));
+
+            setChartData(categoricalData);
+        }
+    };
+
+
+    return (
+        <div className="flex flex-col gap-5 p-5 bg-gray-100 rounded-lg shadow-lg">
+            {/* Selettore KPI */}
+            <KpiSelector
+                kpi={kpi}
+                setKpi={setKpi}
+                timeFrame={timeFrame}
+                setTimeFrame={setTimeFrame}
+                graphType={graphType}
+                setGraphType={setGraphType}
+                filters={filters}
+                setFilters={setFilters}
+                onGenerate={fetchChartData} // Chiama l'API quando viene cliccato il pulsante "Generate Chart"
+            />
+
+            {/* Visualizzazione del Grafico */}
+            <section className="mt-5 bg-white p-5 rounded-lg shadow-lg">
+                <Chart data={chartData} graphType={graphType}/>
+            </section>
+        </div>
+    );
 };
 
 export default DataView;
