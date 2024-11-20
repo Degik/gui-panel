@@ -2,7 +2,7 @@ import { mockLogData } from './mockData/mockDataLog';
 
 export interface LogItem {
     id: number;
-    type: 'Info' | 'Warning' | 'Error';
+    type: string;
     header: string;
     body: string;
     isRead: boolean;
