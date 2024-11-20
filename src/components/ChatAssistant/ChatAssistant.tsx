@@ -43,7 +43,7 @@ const ChatAssistant: React.FC = () => {
         onClick={toggleChat}
         aria-label={isChatOpen ? 'Close chat' : 'Open chat'}
       >
-        <img src="./icons/chat-icon.svg" alt="Chat Icon" className="w-8 h-8" />
+        <img src="/ChatAssistant/icons/chat-icon.svg" alt="Chat Icon" className="w-8 h-8" />
       </button>
 
       {/* Chat Window */}
