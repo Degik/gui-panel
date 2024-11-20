@@ -1,22 +1,34 @@
 import Cookies from 'js-cookie';
 
-// Costante per il nome del cookie
-const LOG_COOKIE_NAME = 'dashboard_logs';
+export interface LogEntry {
+    id: number;
+    type: string;
+    header: string;
+    body: string;
+    isRead: boolean;
+}
 
-// Recupera i log dai cookie
-export const getLogsFromCookies = (): any[] => {
-    const logs = Cookies.get(LOG_COOKIE_NAME);
+// Recupera i log dal cookie
+export const getLogsFromCookies = (username: string): LogEntry[] => {
+    const logs = Cookies.get(`logs_${username}`);
     return logs ? JSON.parse(logs) : [];
 };
 
-// Aggiunge un nuovo log ai cookie
-export const addLogToCookies = (log: any): void => {
-    const logs = getLogsFromCookies();
-    logs.push(log);
-    Cookies.set(LOG_COOKIE_NAME, JSON.stringify(logs), { expires: 7 });
+// Salva i log nel cookie
+export const saveLogsToCookies = (username: string, logs: LogEntry[]) => {
+    Cookies.set(`logs_${username}`, JSON.stringify(logs), { expires: 7 });
 };
 
-// Pulisce i log dai cookie
-export const clearLogsInCookies = (): void => {
-    Cookies.remove(LOG_COOKIE_NAME);
+// Aggiunge un nuovo log e salva nei cookie
+export const addLogEntry = (
+    username: string,
+    log: LogEntry,
+    onNotification: (message: string) => void
+) => {
+    const currentLogs = getLogsFromCookies(username);
+    const updatedLogs = [...currentLogs, log];
+    saveLogsToCookies(username, updatedLogs);
+
+    // Notifica l'utente di un nuovo log
+    onNotification(`New log: ${log.header}`);
 };

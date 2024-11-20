@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useLocation, Routes, Route, Navigate } from 'react-router-dom';
-import classNames from 'classnames'; // For conditional Tailwind classes
 import { NotificationProvider, useNotification } from './Notification/Notification';
 import ChatAssistant from './ChatAssistant/ChatAssistant';
 import DashboardSidebar from './Sidebar/Sidebar';
@@ -9,6 +8,9 @@ import UserSettings from './UserSettings/UserSettings';
 import DataView from './DataView/DataView';
 import Home from './Home/Home';
 import LogPage from './LogPage/LogPage';
+
+// Importa i metodi dal file logUtils
+import { addLogEntry, getLogsFromCookies, LogEntry } from '../utils/logs';
 
 interface DashboardProps {
     username: string;
@@ -35,6 +37,7 @@ const NotificationBanner: React.FC = () => {
 
 const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) => {
     const location = useLocation();
+    const { addNotification } = useNotification();
 
     const sectionMap: { [key: string]: string } = {
         home: 'Home',
@@ -45,16 +48,31 @@ const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) 
 
     const section = sectionMap[location.pathname.replace('/', '')] || 'Unknown Section';
 
-    const { addNotification } = useNotification();
-
-    const handleNewNotification = () => {
-        addNotification({
+    // Simulazione di un nuovo log
+    const handleNewLog = () => {
+        const newLog: LogEntry = {
             id: Date.now(),
-            type: 'Info',
-            message: 'A new log entry has been created!',
+            type: 'Error',
+            header: 'Test Log',
+            body: 'This is a test log entry.',
             isRead: false,
+        };
+
+        addLogEntry(username, newLog, (message) => {
+            addNotification({
+                id: newLog.id,
+                type: 'Info',
+                message,
+                isRead: false,
+            });
         });
     };
+
+    useEffect(() => {
+        // Recupera i log all'avvio
+        const currentLogs = getLogsFromCookies(username);
+        console.log('Current logs:', currentLogs);
+    }, [username]);
 
     return (
         <div className="flex min-h-screen bg-gray-100">
@@ -80,10 +98,10 @@ const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) 
                     {/* Pulsante per testare le notifiche */}
                     <div className="mb-4">
                         <button
-                            onClick={handleNewNotification}
+                            onClick={handleNewLog}
                             className="px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600"
                         >
-                            Add Test Notification
+                            Add Test Log
                         </button>
                     </div>
 
@@ -108,5 +126,4 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = (props) => (
         <SmartFactory {...props} />
     </NotificationProvider>
 );
-
 export default SmartFactoryDashboard;
