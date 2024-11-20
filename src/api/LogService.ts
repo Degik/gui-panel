@@ -1,4 +1,4 @@
-import { mockLogData } from './mockData/LogData';
+import { mockLogData } from './mockData/mockDataLog';
 
 export interface LogItem {
     id: number;
