@@ -1,0 +1,55 @@
+.logPage {
+    padding: 20px;
+}
+
+.title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.logList {
+    list-style: none;
+    padding: 0;
+}
+
+.logItem {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.logItem:hover {
+    background-color: #f9f9f9;
+}
+
+.logItem.unread {
+    background-color: #ffecec;
+}
+
+.logItem.read {
+    background-color: #e8f5e9;
+}
+
+.logHeader {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.logType {
+    color: #007bff;
+    margin-right: 10px;
+}
+
+.logHeaderText {
+    flex-grow: 1;
+}
+
+.logBody {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #555;
+}

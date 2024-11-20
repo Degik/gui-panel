@@ -7,6 +7,7 @@ import Header from './Header/Header';
 import UserSettings from './UserSettings/UserSettings';
 import DataView from './DataView/DataView';
 import Home from './Home/Home';
+import LogPage from "./LogPage/LogPage";
 
 interface DashboardProps {
     username: string;
@@ -53,6 +54,7 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
                         <Route path="home" element={<Home />} />
                         <Route path="user-settings" element={<UserSettings />} />
                         <Route path="data-view" element={<DataView />} />
+                        <Route path="log" element={<LogPage />} />
                     </Routes>
                 </div>
             </main>

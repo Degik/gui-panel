@@ -20,7 +20,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onLogin }) => {
     try {
       //let data = await secureLogin(username, password); // Chiamata all'API
       //console.log('Risultato API:', data);
-      let data = {success: true};
+      const data = {
+        success: true,
+        user: {
+          username: 'test',
+          token: '12345'
+        }
+      };
       if (data.success) {
         onLogin(username, password); // Notifica il login riuscito
       } else {
