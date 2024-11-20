@@ -4,7 +4,7 @@ import { fetchLogs, markAsRead } from '../../api/LogService';
 
 interface LogItem {
     id: number;
-    type: 'Info' | 'Warning' | 'Error'; // Tipologia
+    type: string; // Tipologia
     header: string; // Header della notifica
     body: string; // Corpo interno
     isRead: boolean; // Stato della notifica
