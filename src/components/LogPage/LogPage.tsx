@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from '../styles/LogPage.module.css';
+import styles from './styles/LogPage.module.css';
 import { fetchLogs, markAsRead } from '../../api/LogService';
 import { FaInfoCircle, FaExclamationTriangle, FaTimesCircle } from 'react-icons/fa';
 
