@@ -18,6 +18,7 @@ interface DashboardProps {
     userAvatar?: string;
 }
 
+
 const NotificationBanner: React.FC = () => {
     const { notifications } = useNotification();
 
@@ -77,7 +78,7 @@ const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) 
     return (
         <div className="flex min-h-screen bg-gray-100">
             {/* Notifiche Temporanee */}
-            <NotificationBanner />
+            {/*<NotificationBanner />*/}
 
             {/* Sidebar */}
             <DashboardSidebar />
