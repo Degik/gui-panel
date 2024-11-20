@@ -1,6 +1,5 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
-import { useCookies } from 'react-cookie';
-import styles from './styles/Notification.module.css';
+import React, { createContext, useContext, useState } from 'react';
+import { getLogsFromCookies, addLogToCookies } from '../../utils/logs';
 
 interface Notification {
     id: number;
@@ -9,57 +8,50 @@ interface Notification {
     isRead: boolean;
 }
 
-interface NotificationContextType {
+interface NotificationContextProps {
     notifications: Notification[];
     addNotification: (notification: Notification) => void;
-    markAllAsRead: () => void;
+    logs: any[];
+    addLog: (log: any) => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextProps | undefined>(undefined);
 
-export const useNotification = () => {
+export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [notifications, setNotifications] = useState<Notification[]>([]);
+    const [logs, setLogs] = useState(getLogsFromCookies());
+
+    // Aggiungi una nuova notifica
+    const addNotification = (notification: Notification) => {
+        setNotifications((prev) => [...prev, notification]);
+        // Quando arriva una notifica, aggiungila anche ai log
+        const log = {
+            id: notification.id,
+            type: notification.type,
+            header: notification.message,
+            body: `Dettagli per la notifica: ${notification.message}`,
+            isRead: false,
+        };
+        addLog(log);
+    };
+
+    // Aggiungi un nuovo log
+    const addLog = (log: any) => {
+        setLogs((prev) => [...prev, log]);
+        addLogToCookies(log);
+    };
+
+    return (
+        <NotificationContext.Provider value={{ notifications, addNotification, logs, addLog }}>
+            {children}
+        </NotificationContext.Provider>
+    );
+};
+
+export const useNotification = (): NotificationContextProps => {
     const context = useContext(NotificationContext);
     if (!context) {
         throw new Error('useNotification must be used within a NotificationProvider');
     }
     return context;
-};
-
-export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
-    const [cookies, setCookie] = useCookies(['notifications']);
-
-    // Restore notifications from cookies on load
-    React.useEffect(() => {
-        if (cookies.notifications) {
-            setNotifications(cookies.notifications);
-        }
-    }, [cookies.notifications]);
-
-    const addNotification = (notification: Notification) => {
-        const newNotifications = [...notifications, notification];
-        setNotifications(newNotifications);
-        setCookie('notifications', newNotifications, { path: '/' });
-    };
-
-    const markAllAsRead = () => {
-        const updatedNotifications = notifications.map((n) => ({ ...n, isRead: true }));
-        setNotifications(updatedNotifications);
-        setCookie('notifications', updatedNotifications, { path: '/' });
-    };
-
-    return (
-        <NotificationContext.Provider value={{ notifications, addNotification, markAllAsRead }}>
-            {children}
-            <div className={styles.notificationContainer}>
-                {notifications
-                    .filter((n) => !n.isRead)
-                    .map((n) => (
-                        <div key={n.id} className={`${styles.notification} ${styles[n.type.toLowerCase()]}`}>
-                            {n.message}
-                        </div>
-                    ))}
-            </div>
-        </NotificationContext.Provider>
-    );
 };
