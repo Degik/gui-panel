@@ -97,6 +97,7 @@ const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) 
                 {/* Main Routes */}
                 <div className="flex-grow p-4">
                     {/* Pulsante per testare le notifiche */}
+                    {/*
                     <div className="mb-4">
                         <button
                             onClick={handleNewLog}
@@ -104,7 +105,7 @@ const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) 
                         >
                             Add Test Log
                         </button>
-                    </div>
+                    </div> */}
 
                     <Routes>
                         <Route path="/" element={<Navigate to="home" replace />} />
