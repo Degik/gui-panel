@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLocation, Routes, Route, Navigate } from 'react-router-dom';
 import classNames from 'classnames'; // For conditional Tailwind classes
+import {NotificationProvider, useNotification} from "./Notification/Notification";
 import ChatAssistant from './ChatAssistant/ChatAssistant';
 import DashboardSidebar from './Sidebar/Sidebar';
 import Header from './Header/Header';
@@ -31,10 +32,28 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
 
     const section = sectionMap[location.pathname.replace('/', '')] || 'Unknown Section';
 
+    {/*TEST NOTIFICATION*/}
+    const { addNotification } = useNotification();
+    const handleNewNotification = () => {
+        addNotification({
+            id: Date.now(),
+            type: 'Info',
+            message: 'This is a test notification!',
+            isRead: false,
+        });
+    };
+
     return (
         <div className="flex min-h-screen bg-gray-100">
             {/* Sidebar */}
-            <DashboardSidebar />
+            <DashboardSidebar/>
+
+            {/*TEST NOTIFICATION*/}
+            <div>
+                <h1>Dashboard</h1>
+                <button onClick={handleNewNotification}>Add Test Notification</button>
+            </div>
+
 
             {/* Main Content */}
             <main className="flex flex-col flex-grow">
@@ -47,20 +66,23 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
                     role={role}
                 />
 
-                {/* Dynamic Routes */}
-                <div className="flex-grow p-4">
-                    <Routes>
-                        <Route path="/" element={<Navigate to="home" replace />} />
-                        <Route path="home" element={<Home />} />
-                        <Route path="user-settings" element={<UserSettings />} />
-                        <Route path="data-view" element={<DataView />} />
-                        <Route path="log" element={<LogPage />} />
-                    </Routes>
-                </div>
+                {/*Notification system*/}
+                <NotificationProvider>
+                    <div className="flex-grow p-4">
+                        {/* Dynamic Routes */}
+                        <Routes>
+                            <Route path="/" element={<Navigate to="home" replace/>}/>
+                            <Route path="home" element={<Home/>}/>
+                            <Route path="user-settings" element={<UserSettings/>}/>
+                            <Route path="data-view" element={<DataView/>}/>
+                            <Route path="log" element={<LogPage/>}/>
+                        </Routes>
+                    </div>
+                </NotificationProvider>
             </main>
 
             {/* Chat Assistant */}
-            <ChatAssistant />
+            <ChatAssistant/>
         </div>
     );
 };
