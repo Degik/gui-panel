@@ -36,68 +36,73 @@ const ChatAssistant: React.FC = () => {
   };
 
   return (
-      <div className="fixed bottom-4 right-4 z-50">
-        {/* Chat Toggle Button */}
-        <button
-            className="w-16 h-16 bg-blue-600 text-white rounded-full shadow-md flex items-center justify-center hover:scale-110 transition-transform"
-            onClick={toggleChat}
-            aria-label={isChatOpen ? 'Close chat' : 'Open chat'}
-        >
-          <img src="/icons/chat-icon.svg" alt="Chat Icon" className="w-8 h-8" />
-        </button>
+    <div className="fixed bottom-4 right-4 z-50">
+      {/* Chat Toggle Button */}
+      <button
+        className="w-16 h-16 bg-blue-600 text-white rounded-full shadow-md flex items-center justify-center hover:scale-110 transition-transform"
+        onClick={toggleChat}
+        aria-label={isChatOpen ? 'Close chat' : 'Open chat'}
+      >
+        <img src="./icons/chat-icon.svg" alt="Chat Icon" className="w-8 h-8" />
+      </button>
 
-        {/* Chat Window */}
-        {isChatOpen && (
-            <div className="fixed bottom-24 right-4 w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col">
-              {/* Chat Header */}
-              <div className="bg-blue-600 text-white px-4 py-2 flex justify-between items-center rounded-t-lg">
-                <h3 className="text-lg font-semibold">Virtual Assistant</h3>
-                <button
-                    onClick={toggleChat}
-                    className="text-white text-xl font-bold hover:text-gray-300"
-                    aria-label="Close chat"
-                >
-                  ×
-                </button>
-              </div>
+      {/* Chat Window */}
+      {isChatOpen && (
+        <div className="fixed bottom-24 right-4 w-80 h-96 bg-white rounded-lg shadow-lg flex flex-col">
+          {/* Chat Header */}
+          <div className="bg-blue-600 text-white px-4 py-2 flex justify-between items-center rounded-t-lg">
+            <h3 className="text-lg font-semibold">Virtual Assistant</h3>
+            <button
+              onClick={toggleChat}
+              className="text-white text-xl font-bold hover:text-gray-300"
+              aria-label="Close chat"
+            >
+              ×
+            </button>
+          </div>
 
-              {/* Chat Messages */}
-              <div className="flex-grow p-4 overflow-y-auto bg-gray-50 space-y-2">
-                {messages.map((message) => (
-                    <div
-                        key={message.id}
-                        className={classNames(
-                            'max-w-[70%] px-4 py-2 rounded-lg text-sm break-words',
-                            message.sender === 'user'
-                                ? 'self-end bg-blue-500 text-white'
-                                : 'self-start bg-gray-200 text-gray-800'
-                        )}
-                    >
-                      {message.content}
-                    </div>
-                ))}
-              </div>
+          {/* Disclaimer */}
+          <div className="bg-yellow-100 text-yellow-800 text-xs px-4 py-2">
+            Disclaimer: This is an AI-powered assistant. Responses may not always be accurate. Please verify important information.
+          </div>
 
-              {/* Chat Input */}
-              <div className="flex p-2 border-t">
-                <input
-                    type="text"
-                    className="flex-grow border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    placeholder="Type your message..."
-                />
-                <button
-                    onClick={handleSendMessage}
-                    className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
-                >
-                  Send
-                </button>
+          {/* Chat Messages */}
+          <div className="flex-grow p-4 overflow-y-auto bg-gray-50 space-y-2">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={classNames(
+                  'max-w-[70%] px-4 py-2 rounded-lg text-sm break-words',
+                  message.sender === 'user'
+                    ? 'self-end bg-blue-500 text-white'
+                    : 'self-start bg-gray-200 text-gray-800'
+                )}
+              >
+                {message.content}
               </div>
-            </div>
-        )}
-      </div>
+            ))}
+          </div>
+
+          {/* Chat Input */}
+          <div className="flex p-2 border-t">
+            <input
+              type="text"
+              className="flex-grow border border-gray-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onKeyDown={handleKeyDown}
+              placeholder="Type your message..."
+            />
+            <button
+              onClick={handleSendMessage}
+              className="ml-2 bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700 transition-colors"
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 
