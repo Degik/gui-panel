@@ -33,7 +33,7 @@ const NotificationBanner: React.FC = () => {
     );
 };
 
-const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userAvatar }) => {
+const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) => {
     const location = useLocation();
 
     const sectionMap: { [key: string]: string } = {
@@ -57,52 +57,56 @@ const SmartFactoryDashboard: React.FC<DashboardProps> = ({ username, role, userA
     };
 
     return (
-        <NotificationProvider>
-            <div className="flex min-h-screen bg-gray-100">
-                {/* Notifiche Temporanee */}
-                <NotificationBanner />
+        <div className="flex min-h-screen bg-gray-100">
+            {/* Notifiche Temporanee */}
+            <NotificationBanner />
 
-                {/* Sidebar */}
-                <DashboardSidebar />
+            {/* Sidebar */}
+            <DashboardSidebar />
 
-                {/* Main Content */}
-                <main className="flex flex-col flex-grow">
-                    {/* Header */}
-                    <Header
-                        section={section}
-                        path={location.pathname}
-                        userAvatar={userAvatar || '/default-avatar.png'}
-                        userName={username}
-                        role={role}
-                    />
+            {/* Main Content */}
+            <main className="flex flex-col flex-grow">
+                {/* Header */}
+                <Header
+                    section={section}
+                    path={location.pathname}
+                    userAvatar={userAvatar || '/default-avatar.png'}
+                    userName={username}
+                    role={role}
+                />
 
-                    {/* Main Routes */}
-                    <div className="flex-grow p-4">
-                        {/* Pulsante per testare le notifiche */}
-                        <div className="mb-4">
-                            <button
-                                onClick={handleNewNotification}
-                                className="px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600"
-                            >
-                                Add Test Notification
-                            </button>
-                        </div>
-
-                        <Routes>
-                            <Route path="/" element={<Navigate to="home" replace />} />
-                            <Route path="home" element={<Home />} />
-                            <Route path="user-settings" element={<UserSettings />} />
-                            <Route path="data-view" element={<DataView />} />
-                            <Route path="log" element={<LogPage />} />
-                        </Routes>
+                {/* Main Routes */}
+                <div className="flex-grow p-4">
+                    {/* Pulsante per testare le notifiche */}
+                    <div className="mb-4">
+                        <button
+                            onClick={handleNewNotification}
+                            className="px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600"
+                        >
+                            Add Test Notification
+                        </button>
                     </div>
-                </main>
 
-                {/* Chat Assistant */}
-                <ChatAssistant />
-            </div>
-        </NotificationProvider>
+                    <Routes>
+                        <Route path="/" element={<Navigate to="home" replace />} />
+                        <Route path="home" element={<Home />} />
+                        <Route path="user-settings" element={<UserSettings />} />
+                        <Route path="data-view" element={<DataView />} />
+                        <Route path="log" element={<LogPage />} />
+                    </Routes>
+                </div>
+            </main>
+
+            {/* Chat Assistant */}
+            <ChatAssistant />
+        </div>
     );
 };
+
+const SmartFactoryDashboard: React.FC<DashboardProps> = (props) => (
+    <NotificationProvider>
+        <SmartFactory {...props} />
+    </NotificationProvider>
+);
 
 export default SmartFactoryDashboard;
