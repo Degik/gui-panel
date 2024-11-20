@@ -1,48 +1,72 @@
-import React, { createContext, useContext, useState } from 'react';
-import { getLogsFromCookies, addLogToCookies } from '../../utils/logs';
+import React, { createContext, useContext, useReducer, useCallback } from 'react';
 
 interface Notification {
     id: number;
-    type: string;
+    type: string; // 'Info', 'Error', 'Warning', etc.
     message: string;
     isRead: boolean;
+}
+
+interface NotificationState {
+    notifications: Notification[];
 }
 
 interface NotificationContextProps {
     notifications: Notification[];
     addNotification: (notification: Notification) => void;
-    logs: any[];
-    addLog: (log: any) => void;
+    removeNotification: (id: number) => void;
+    markAsRead: (id: number) => void;
 }
 
 const NotificationContext = createContext<NotificationContextProps | undefined>(undefined);
 
+const notificationReducer = (state: NotificationState, action: any): NotificationState => {
+    switch (action.type) {
+        case 'ADD_NOTIFICATION':
+            return { notifications: [...state.notifications, action.payload] };
+        case 'REMOVE_NOTIFICATION':
+            return {
+                notifications: state.notifications.filter(
+                    (notification) => notification.id !== action.payload
+                ),
+            };
+        case 'MARK_AS_READ':
+            return {
+                notifications: state.notifications.map((notification) =>
+                    notification.id === action.payload
+                        ? { ...notification, isRead: true }
+                        : notification
+                ),
+            };
+        default:
+            throw new Error(`Unhandled action type: ${action.type}`);
+    }
+};
+
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [notifications, setNotifications] = useState<Notification[]>([]);
-    const [logs, setLogs] = useState(getLogsFromCookies());
+    const [state, dispatch] = useReducer(notificationReducer, { notifications: [] });
 
-    // Aggiungi una nuova notifica
-    const addNotification = (notification: Notification) => {
-        setNotifications((prev) => [...prev, notification]);
-        // Quando arriva una notifica, aggiungila anche ai log
-        const log = {
-            id: notification.id,
-            type: notification.type,
-            header: notification.message,
-            body: `Dettagli per la notifica: ${notification.message}`,
-            isRead: false,
-        };
-        addLog(log);
-    };
+    const addNotification = useCallback((notification: Notification) => {
+        dispatch({ type: 'ADD_NOTIFICATION', payload: notification });
+    }, []);
 
-    // Aggiungi un nuovo log
-    const addLog = (log: any) => {
-        setLogs((prev) => [...prev, log]);
-        addLogToCookies(log);
+    const removeNotification = useCallback((id: number) => {
+        dispatch({ type: 'REMOVE_NOTIFICATION', payload: id });
+    }, []);
+
+    const markAsRead = useCallback((id: number) => {
+        dispatch({ type: 'MARK_AS_READ', payload: id });
+    }, []);
+
+    const value = {
+        notifications: state.notifications,
+        addNotification,
+        removeNotification,
+        markAsRead,
     };
 
     return (
-        <NotificationContext.Provider value={{ notifications, addNotification, logs, addLog }}>
+        <NotificationContext.Provider value={value}>
             {children}
         </NotificationContext.Provider>
     );
