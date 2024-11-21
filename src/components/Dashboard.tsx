@@ -8,12 +8,12 @@ import UserSettings from './UserSettings/UserSettings';
 import DataView from './DataView/DataView';
 import Home from './Home/Home';
 import LogPage from './LogPage/LogPage';
-import KPIViewer from './KPIViewer/KPIViewer';
 import Forecasting from './Forecast/Forecasting';
 import ReportArchive from './Reports/ReportArchive';
 
 // Importa i metodi dal file logUtils
 import { addLogEntry, getLogsFromCookies, LogEntry } from '../utils/logs';
+import KpiViewer from "./KpiViewer/KpiViewer";
 
 interface DashboardProps {
     username: string;
@@ -116,7 +116,7 @@ const SmartFactory: React.FC<DashboardProps> = ({ username, role, userAvatar }) 
                         <Route path="user-settings" element={<UserSettings />} />
                         <Route path="data-view" element={<DataView />} />
                         <Route path="log" element={<LogPage />} />
-                        <Route path="kpis" element={<KPIViewer/>} />
+                        <Route path="kpis" element={<KpiViewer/>} />
                         <Route path="forecasts" element={<Forecasting/>} />
                         <Route path="reports" element={<ReportArchive/>} />
                         <Route path="*" element={<Navigate to="/home" replace />} />
