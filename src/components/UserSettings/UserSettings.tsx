@@ -1,40 +1,34 @@
-// THIS AREA NEEDS API TO BE COMPLETED
 import React from 'react';
 
 const UserSettings: React.FC = () => {
   return (
-      <main className="p-6 bg-gray-50">
+      <main className="p-6 ">
         <div className="max-w-4xl mx-auto space-y-12">
+
           {/* Personal Information Section */}
-          <section>
-            <h2 className="text-xl font-semibold mb-4">Personal Information</h2>
+          <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800 border-b pb-2">Personal Information</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div>
-                <label
-                    htmlFor="first-name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
+              <div className="flex items-center">
+                <label htmlFor="first-name" className="block text-sm font-medium text-gray-700 mr-4">
                   First Name
                 </label>
                 <input
                     type="text"
                     id="first-name"
-                    className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="w-fit p-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     defaultValue="John"
                 />
               </div>
 
-              <div>
-                <label
-                    htmlFor="last-name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                >
+              <div className="flex items-center">
+                <label htmlFor="last-name" className="block text-sm font-medium text-gray-700 mr-4">
                   Last Name
                 </label>
                 <input
                     type="text"
                     id="last-name"
-                    className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                    className="w-fit p-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                     defaultValue="Doe"
                 />
               </div>
@@ -42,19 +36,16 @@ const UserSettings: React.FC = () => {
           </section>
 
           {/* Account Details Section */}
-          <section>
-            <h2 className="text-xl font-semibold mb-4">Account Details</h2>
-            <div>
-              <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-              >
+          <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800 border-b pb-2">Account Details</h2>
+            <div className="flex items-center">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mr-4">
                 Email Address
               </label>
               <input
                   type="email"
                   id="email"
-                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="w-fit p-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   defaultValue="john@example.com"
               />
             </div>
@@ -69,19 +60,16 @@ const UserSettings: React.FC = () => {
             </div>
           </section>
 
-          {/* Display Settings and Other Options */}
-          <section>
-            <h2 className="text-xl font-semibold mb-4">Display Settings</h2>
-            <div>
-              <label
-                  htmlFor="font-size"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-              >
+          {/* Display Settings Section */}
+          <section className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+            <h2 className="text-2xl font-semibold mb-6 text-gray-800 border-b pb-2">Display Settings</h2>
+            <div className="flex items-center">
+              <label htmlFor="font-size" className="block text-sm font-medium text-gray-700 mr-4">
                 Font Size
               </label>
               <select
                   id="font-size"
-                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="w-fit p-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   defaultValue="Normal"
               >
                 <option value="Small">Small</option>
@@ -90,21 +78,19 @@ const UserSettings: React.FC = () => {
               </select>
             </div>
 
-            <div className="mt-8">
-              <label
-                  htmlFor="pronouns"
-                  className="block text-sm font-medium text-gray-700 mb-1"
-              >
+            <div className="mt-8 flex items-center">
+              <label htmlFor="pronouns" className="block text-sm font-medium text-gray-700 mr-4">
                 Pronouns
               </label>
               <input
                   type="text"
                   id="pronouns"
-                  className="block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                  className="w-fit p-3 border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   defaultValue="Sir/Mr"
               />
             </div>
           </section>
+
         </div>
       </main>
   );

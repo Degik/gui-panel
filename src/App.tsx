@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import DashboardLayout from './components/Dashboard';
+import Home from './components/Home';
 import LoginForm from './components/LoginForm';
 
 const App = () => {
@@ -22,7 +22,7 @@ const App = () => {
                         {/* Rotta principale per la dashboard */}
                         <Route
                             path="/*"
-                            element={<DashboardLayout username={username} role="Floor Factory Manager"/>}
+                            element={<Home username={username} role="Floor Factory Manager"/>}
                         />
                         {/* Reindirizza qualsiasi rotta non valida */}
                         <Route path="*" element={<Navigate to="/"/>}/>

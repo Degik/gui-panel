@@ -27,7 +27,13 @@ const formatDate = (timestamp: string) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Formats as HH:mm
 };
 
-const CustomTooltip = ({active, payload, label}: any) => {
+const formatDateEx = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString(); // Formats as MM/DD/YYYY, HH:mm:ss
+};
+
+
+const DrillDownTooltip = ({active, payload, label}: any) => {
     if (active && payload && payload.length) {
         return (
             <div
@@ -41,6 +47,36 @@ const CustomTooltip = ({active, payload, label}: any) => {
             >
                 <p style={{margin: 0, fontWeight: 'bold'}}>{label}</p>
                 <p style={{margin: 0}}>{`${payload[0].name}: ${payload[0].value}`}</p>
+            </div>
+        );
+    }
+    return null;
+};
+
+const LineTooltip = ({ active, payload, label }: any) => {
+    if (active && payload && payload.length) {
+        return (
+            <div
+                style={{
+                    backgroundColor: '#fff',
+                    border: '1px solid #ccc',
+                    padding: '10px',
+                    borderRadius: '4px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                }}
+            >
+                <p style={{ margin: 0, fontWeight: 'bold' }}>{formatDateEx(label)}</p>
+                {payload.map((entry: any, index: number) => (
+                    <p
+                        key={`tooltip-${index}`}
+                        style={{
+                            margin: 0,
+                            color: entry.stroke, // Match the line's color
+                        }}
+                    >
+                        {`${entry.name}: ${entry.value}`}
+                    </p>
+                ))}
             </div>
         );
     }
@@ -64,7 +100,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
                         <XAxis dataKey="name" tick={{ fill: '#666' }}/>
                         <YAxis tick={{ fill: '#666' }}/>
-                        <Tooltip content={<CustomTooltip/>}/>
+                        <Tooltip content={<DrillDownTooltip/>}/>
                         <Legend />
                         <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
                     </BarChart>
@@ -77,7 +113,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
                         <XAxis type="number" tick={{ fill: '#666' }}/>
                         <YAxis dataKey="name" tick={{ fill: '#666' }}/>
-                        <Tooltip content={<CustomTooltip />} />
+                        <Tooltip content={<DrillDownTooltip />} />
                         <Legend />
                         <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
                     </BarChart>
@@ -95,7 +131,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                             tickFormatter={formatDate}  // Apply the custom formatting
                         />
                         <YAxis tick={{ fill: '#666' }} />
-                        <Tooltip content={<CustomTooltip />} />
+                        <Tooltip content={<LineTooltip />} trigger={"hover"} />
                         <Legend />
                         {Object.keys(data[0] || {})
                             .filter((key) => key !== 'timestamp') // Exclude the timestamp key
@@ -126,7 +162,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                             tickFormatter={formatDate}  // Apply the custom formatting
                         />
                         <YAxis tick={{ fill: '#666' }} />
-                        <Tooltip content={<CustomTooltip />} />
+                        <Tooltip content={<LineTooltip />} trigger={"hover"} />
                         <Legend />
                         {Object.keys(data[0] || {}).filter((key) => key !== 'timestamp').map((machine, index) => (
                             <Area
@@ -161,7 +197,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
                             ))}
                         </Pie>
-                        <Tooltip content={<CustomTooltip/>}/>
+                        <Tooltip content={<DrillDownTooltip/>}/>
                     </PieChart>
                 </ResponsiveContainer>
             );

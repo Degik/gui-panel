@@ -17,7 +17,7 @@ const KpiViewer = () => {
     const kpiList = getKpiList();
 
     return (
-        <div className="KpiViewer max-w-3xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
+        <div className="KpiViewer max-w-6xl mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
             <h1 className="text-2xl font-bold mb-4 text-gray-800">KPI Viewer</h1>
             <div className="space-y-4">
                 {kpiList.map((kpi) => (

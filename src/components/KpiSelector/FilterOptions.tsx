@@ -65,7 +65,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange, mockDa
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c33b492660f47ebadbd4ddc262746d4b9184c091300184241c32c88890005c5?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130"
                     alt="Options Icon"
-                    className={`w-5 h-5 cursor-pointer transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    className={`w-5 h-5 cursor-pointer transform transition-transform ${(isExpanded ? '' : 'rotate-180')}`}
                     onClick={() => setIsExpanded(!isExpanded)} // Toggle the expansion
                 />
             </div>

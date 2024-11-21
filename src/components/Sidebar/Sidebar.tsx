@@ -14,6 +14,7 @@ const DashboardSidebar: React.FC = () => {
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cb7c1de2b136e197f1651cffbbbacb0281af7137538dad2c0ab0fee4449f1b93?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'Log', path: '/log' },
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/0d48c9f5dfc5a5a35e09f99f937cac2777cbffd55ad9387fca9e140c2b0bc70f?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'Production Lines', path: '/production-lines' },
       {icon: '', text: 'KPIs', path: '/kpis'},
+      {icon: '', text: 'Forecasting', path: '/forecasts'},
   ];
 
   const dashboardsItems = [
@@ -24,7 +25,7 @@ const DashboardSidebar: React.FC = () => {
   ];
 
   return (
-      <aside className="bg-white border-r border-gray-200 flex flex-col items-center w-52 h-screen p-3">
+      <aside className="bg-white border-r border-gray-200 flex flex-col items-center w-fit h-screen p-3">
           {/* Company Logo */}
           <div className="flex justify-center items-center mb-4">
               <img

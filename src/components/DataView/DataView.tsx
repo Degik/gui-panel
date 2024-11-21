@@ -70,7 +70,7 @@ const DataView: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col w-full h-full bg-white p-5 rounded-lg space-y-5">
+        <div className="flex flex-col w-full h-full space-y-5 items-center">
             {/* KPI Selector and Generate Button */}
             <KpiSelector
                 kpi={kpi}
@@ -85,7 +85,7 @@ const DataView: React.FC = () => {
             />
 
             {/* Chart Section */}
-            <div className="flex-1">
+            <div className={` shadow-md p-5 rounded-lg bg-white flex-1 w-full`}>
                 <Chart data={chartData} graphType={graphType} />
             </div>
         </div>
