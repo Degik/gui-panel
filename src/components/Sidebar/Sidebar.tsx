@@ -1,17 +1,7 @@
 import React from 'react';
 import SidebarSection from './SidebarSection';
-import styles from './styles/Sidebar.module.css';
 
-interface SidebarProps {
-
-  companyName?: string;
-
-  logo?: string;
-
-}
-
-const DashboardSidebar = () => {
-  // Data for the sidebar
+const DashboardSidebar: React.FC = () => {
   const favoritesItems = [
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/5a1623533feb957ed0356b69b19c86481c64ebf03b9a3e91420e6ce2924e91bd?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'Overview', path: '/' },
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/5a1623533feb957ed0356b69b19c86481c64ebf03b9a3e91420e6ce2924e91bd?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'March Reports', path: '/march-reports' },
@@ -23,6 +13,7 @@ const DashboardSidebar = () => {
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/a71c21e7b5dfbcb7b600377b94bb0ba6e150f444fca7a9c978d6d84a0e3b8cea?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'Data View', path: '/data-view' },
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cb7c1de2b136e197f1651cffbbbacb0281af7137538dad2c0ab0fee4449f1b93?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'Log', path: '/log' },
     { icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/0d48c9f5dfc5a5a35e09f99f937cac2777cbffd55ad9387fca9e140c2b0bc70f?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130', text: 'Production Lines', path: '/production-lines' },
+      {icon: '', text: 'KPIs', path: '/kpis'},
   ];
 
   const dashboardsItems = [
@@ -33,21 +24,22 @@ const DashboardSidebar = () => {
   ];
 
   return (
-    <aside className={styles.sidebar}>
-      {/* Company Logo */}
-      <div className={styles.logoContainer}>
-        <img
-          src={require('./icons/logo.svg').default}
-          alt="Company Logo"
-          className={styles.logo}
-        />
-        {/*<h1 className={styles.companyName}>Smart Factory</h1>*/}
-      </div>
+      <aside className="bg-white border-r border-gray-200 flex flex-col items-center w-52 h-screen p-3">
+          {/* Company Logo */}
+          <div className="flex justify-center items-center mb-4">
+              <img
+                  src={require('./icons/logo.svg').default}
+                  alt="Company Logo"
+                  className="w-36 h-auto"
+              />
+          </div>
 
-      <SidebarSection title="Favorites" items={favoritesItems} />
-      <SidebarSection title="Sections" items={sectionsItems} />
-      <SidebarSection title="Dashboards" items={dashboardsItems} />
-    </aside>
+          {/* Sidebar Sections */}
+          <SidebarSection title="Favorites" items={favoritesItems}/>
+          <SidebarSection title="Sections" items={sectionsItems} />
+          <SidebarSection title="Dashboards" items={dashboardsItems}/>
+      </aside>
+
   );
 };
 

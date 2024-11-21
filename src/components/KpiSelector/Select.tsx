@@ -2,23 +2,28 @@ import React from 'react';
 
 interface SelectProps {
     label: string;
-    description: string;
+    description?: string; // Made optional
     value: string;
-    options: string[]; // Options
-    iconSrc: string;
-    onChange: (value: string) => void; // Callback function
+    options: string[];
+    iconSrc?: string; // Made optional
+    onChange: (value: string) => void;
 }
 
 const Select: React.FC<SelectProps> = ({ label, description, value, options, iconSrc, onChange }) => {
     return (
-        <div className="mb-6">
-            <div className="text-lg font-medium mb-1">{label}</div>
-            <div className="text-sm text-gray-500 mb-2">{description}</div>
-            <div className="relative">
+        <div className="flex flex-col items-start space-y-1">
+            {/* Label */}
+            <label className="text-base font-medium text-gray-700">{label}</label>
+
+            {/* Optional Description */}
+            {description && <p className="text-sm text-gray-500 font-normal">{description}</p>}
+
+            {/* Select Wrapper */}
+            <div className="relative w-52 font-normal"> {/* Adjust the width */}
                 <select
-                    className="block w-full p-3 pl-10 pr-4 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
+                    className="block w-full p-2.5 pl-10 pr-4 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
                     value={value}
-                    onChange={(e) => onChange(e.target.value)} // Send selected value to parent
+                    onChange={(e) => onChange(e.target.value)}
                 >
                     {options.map((option, index) => (
                         <option key={index} value={option}>
@@ -26,12 +31,16 @@ const Select: React.FC<SelectProps> = ({ label, description, value, options, ico
                         </option>
                     ))}
                 </select>
-                <img
-                    loading="lazy"
-                    src={iconSrc}
-                    alt={label}
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
-                />
+
+                {/* Optional Icon */}
+                {iconSrc && (
+                    <img
+                        loading="lazy"
+                        src={iconSrc}
+                        alt={label}
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" // Smaller size
+                    />
+                )}
             </div>
         </div>
     );

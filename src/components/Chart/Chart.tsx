@@ -22,6 +22,11 @@ interface ChartProps {
 
 const COLORS = ['#8884d8', '#83a6ed', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57'];
 
+const formatDate = (timestamp: string) => {
+    const date = new Date(timestamp);
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Formats as HH:mm
+};
+
 const CustomTooltip = ({active, payload, label}: any) => {
     if (active && payload && payload.length) {
         return (
@@ -67,8 +72,8 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
             );
         case 'BarH': // Horizontal Bar Chart
             return (
-                <ResponsiveContainer width="100%" height={400}>
-                    <BarChart data={data}>
+                <ResponsiveContainer width="100%" height={400} >
+                    <BarChart data={data} layout='horizontal'>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
                         <XAxis type="number" tick={{ fill: '#666' }}/>
                         <YAxis dataKey="name" tick={{ fill: '#666' }}/>
@@ -84,7 +89,11 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                 <ResponsiveContainer width="100%" height={400}>
                     <LineChart data={data}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                        <XAxis dataKey="timestamp" tick={{ fill: '#666' }} />
+                        <XAxis
+                            dataKey="timestamp"
+                            tick={{ fill: '#666' }}
+                            tickFormatter={formatDate}  // Apply the custom formatting
+                        />
                         <YAxis tick={{ fill: '#666' }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
@@ -106,34 +115,16 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                 </ResponsiveContainer>
             );
 
-        case 'Pie':
-            return (
-                <ResponsiveContainer width="100%" height={400}>
-                    <PieChart>
-                        <Pie
-                            data={data}
-                            dataKey="value"
-                            nameKey="name"
-                            cx="50%"
-                            cy="50%"
-                            outerRadius={120}
-                            fill="#8884d8"
-                            label
-                        >
-                            {data.map((entry, index) => (
-                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
-                            ))}
-                        </Pie>
-                        <Tooltip content={<CustomTooltip/>}/>
-                    </PieChart>
-                </ResponsiveContainer>
-            );
         case 'Area':
             return (
                 <ResponsiveContainer width="100%" height={400}>
                     <AreaChart data={data}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
-                        <XAxis dataKey="timestamp" tick={{ fill: '#666' }} />
+                        <XAxis
+                            dataKey="timestamp"
+                            tick={{ fill: '#666' }}
+                            tickFormatter={formatDate}  // Apply the custom formatting
+                        />
                         <YAxis tick={{ fill: '#666' }} />
                         <Tooltip content={<CustomTooltip />} />
                         <Legend />
@@ -149,6 +140,29 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                             />
                         ))}
                     </AreaChart>
+                </ResponsiveContainer>
+            );
+
+        case 'Pie':
+            return (
+                <ResponsiveContainer width="100%" height={400}>
+                    <PieChart>
+                        <Pie
+                            data={data}
+                            dataKey="value"
+                            nameKey="name"
+                            cx="50%"
+                            cy="50%"
+                            outerRadius={120}
+                            fill="#8884d8"
+                            label={(entry) => `${entry.name}`}
+                        >
+                            {data.map((entry, index) => (
+                                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
+                            ))}
+                        </Pie>
+                        <Tooltip content={<CustomTooltip/>}/>
+                    </PieChart>
                 </ResponsiveContainer>
             );
         default:

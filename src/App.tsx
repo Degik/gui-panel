@@ -16,23 +16,23 @@ const App = () => {
 
     return (
         <Router>
-            <div>
+            <div className=" flex flex-col justify-center text-center min-h-screen bg-gray-200 font-bold">
                 {isAuthenticated ? (
                     <Routes>
                         {/* Rotta principale per la dashboard */}
                         <Route
                             path="/*"
-                            element={<DashboardLayout username={username} role="Floor Factory Manager" />}
+                            element={<DashboardLayout username={username} role="Floor Factory Manager"/>}
                         />
                         {/* Reindirizza qualsiasi rotta non valida */}
-                        <Route path="*" element={<Navigate to="/" />} />
+                        <Route path="*" element={<Navigate to="/"/>}/>
                     </Routes>
                 ) : (
                     <Routes>
                         {/* Rotta per il login */}
-                        <Route path="/" element={<LoginForm onLogin={handleLogin} />} />
+                        <Route path="/" element={<LoginForm onLogin={handleLogin}/>}/>
                         {/* Reindirizza qualsiasi rotta non valida */}
-                        <Route path="*" element={<Navigate to="/" />} />
+                        <Route path="*" element={<Navigate to="/"/>}/>
                     </Routes>
                 )}
             </div>
