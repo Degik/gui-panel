@@ -1,5 +1,20 @@
 import React from 'react';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import { mockDashboards } from '../Home';
+
+// Helper function to find a name from the mock data based on a segment
+const resolveName = (segment: string): string => {
+    const matched = mockDashboards.find(d => d.id === segment);
+    return matched ? matched.name : formatPath(segment); // Fallback to formatPath if not found
+};
+
+// Format path segments
+const formatPath = (path: string): string => {
+    return path
+        .replace(/^\/|\/$/g, '') // Trim leading/trailing slashes
+        .replace(/[_-]/g, ' ') // Replace underscores and hyphens with spaces
+        .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize each word
+};
 
 interface HeaderProps {
     path: string; // e.g., "/user_settings"
@@ -8,17 +23,7 @@ interface HeaderProps {
     role: string;
 }
 
-const formatPath = (path: string): string => {
-    // Remove leading or trailing slashes, replace underscores with spaces, and capitalize
-    return path
-        .replace(/^\/|\/$/g, '') // Trim leading/trailing slashes
-        .replace(/[_-]/g, ' ') // Replace both underscores and hyphens with spaces
-        .replace(/\b\w/g, char => char.toUpperCase()); // Capitalize each word
-};
-
-const Header: React.FC<HeaderProps> = ({path, userAvatar, userName, role }) => {
-
-    // Create an array of path segments
+const Header: React.FC<HeaderProps> = ({ path, userAvatar, userName, role }) => {
     const pathSegments = path.split('/').filter(Boolean);
 
     return (
@@ -36,25 +41,28 @@ const Header: React.FC<HeaderProps> = ({path, userAvatar, userName, role }) => {
                 </button>
                 <ol className="flex list-none space-x-2 text-sm text-gray-700">
                     {/* Loop through path segments */}
-                    {pathSegments.map((segment, index) => (
-                        <React.Fragment key={index}>
-                            <li>
-                                {index < pathSegments.length - 1 ? (
-                                    <Link
-                                        to={`/${pathSegments.slice(0, index + 1).join('/')}`} // Build link dynamically for each segment
-                                        className="text-blue-600 hover:underline"
-                                    >
-                                        {formatPath(segment)} {/* Format segment to be more readable */}
-                                    </Link>
-                                ) : (
-                                    <span className="text-gray-900">
-                                        {formatPath(segment)} {/* Last segment is not a link */}
-                                    </span>
-                                )}
-                            </li>
-                            {index < pathSegments.length - 1 && <li className="text-gray-400">/</li>}
-                        </React.Fragment>
-                    ))}
+                    {pathSegments.map((segment, index) => {
+                        const segmentName = resolveName(segment); // Resolve name dynamically
+                        return (
+                            <React.Fragment key={index}>
+                                <li>
+                                    {index < pathSegments.length - 1 ? (
+                                        <Link
+                                            to={`/${pathSegments.slice(0, index + 1).join('/')}`} // Build link dynamically for each segment
+                                            className="text-blue-600 hover:underline"
+                                        >
+                                            {segmentName}
+                                        </Link>
+                                    ) : (
+                                        <span className="text-gray-900">
+                                            {segmentName} {/* Last segment is not a link */}
+                                        </span>
+                                    )}
+                                </li>
+                                {index < pathSegments.length - 1 && <li className="text-gray-400">/</li>}
+                            </React.Fragment>
+                        );
+                    })}
                 </ol>
             </nav>
 

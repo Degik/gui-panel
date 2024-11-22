@@ -11,6 +11,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({ title, items }) => (
         <h3 className="text-sm space-y-1 font-bold uppercase text-gray-500 mb-2">{title}</h3>
         <div className="flex flex-col gap-2">
             {items.map((item) => (
+
                 <SidebarItem icon={item.icon} text={item.text} path={item.path} />
             ))}
         </div>

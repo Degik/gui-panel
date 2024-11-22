@@ -17,6 +17,14 @@ import KpiViewer from "./KpiViewer/KpiViewer";
 import ReportSchedules from "./Reports/ReportSchedules";
 import Dashboard from "./Dashboard/Dashboard";
 
+
+// Mock data for demonstration
+export const mockDashboards = [
+    { id: 'Lines', name: 'Production Lines Dashboards', type: 'folder' },
+    { id: 'Lines/1', name: 'Production Line #1', type: 'point' },
+    { id: 'placeholder', name: 'Saved Dashboard Folder Name', type: 'folder' },
+];
+
 interface UserProps {
     username: string;
     role: string;
@@ -86,7 +94,7 @@ const SmartFactory: React.FC<UserProps> = ({username, role, userAvatar}) => {
                     path={location.pathname}
                     userAvatar={userAvatar || '/default-avatar.png'}
                     userName={username}
-                    role={role}
+                    role={role} section={''} dashboards={mockDashboards}
                 />
 
                 {/* Main Routes */}
@@ -105,7 +113,8 @@ const SmartFactory: React.FC<UserProps> = ({username, role, userAvatar}) => {
                     <Routes>
                         <Route path="/" element={<Navigate to="home" replace/>}/>
                         <Route path="home" element={<Home/>}/>
-                        <Route path="dashboard/:dashboardId" element={<Dashboard/>}/>
+                        <Route path="dashboards/:dashboardId" element={<Dashboard/>}/>
+                        <Route path="dashboards/:dashboardPath/:dashboardId" element={<Dashboard/>}/>
                         <Route path="user-settings" element={<UserSettings/>}/>
                         <Route path="data-view" element={<DataView/>}/>
                         <Route path="log" element={<LogPage/>}/>
