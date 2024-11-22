@@ -94,7 +94,7 @@ const SmartFactory: React.FC<UserProps> = ({username, role, userAvatar}) => {
                     path={location.pathname}
                     userAvatar={userAvatar || '/default-avatar.png'}
                     userName={username}
-                    role={role} section={''} dashboards={mockDashboards}
+                    role={role}
                 />
 
                 {/* Main Routes */}
