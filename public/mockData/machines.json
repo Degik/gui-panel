@@ -1,0 +1,117 @@
+[
+  {
+    "machineId": "Machine 1",
+    "site": "Site 1",
+    "productionLine": "Line 1"
+  },
+  {
+    "machineId": "Machine 2",
+    "site": "Site 1",
+    "productionLine": "Line 1"
+  },
+  {
+    "machineId": "Machine 3",
+    "site": "Site 1",
+    "productionLine": "Line 2"
+  },
+  {
+    "machineId": "Machine 4",
+    "site": "Site 2",
+    "productionLine": "Line 3"
+  },
+  {
+    "machineId": "Machine 5",
+    "site": "Site 2",
+    "productionLine": "Line 3"
+  },
+  {
+    "machineId": "Machine 6",
+    "site": "Site 2",
+    "productionLine": "Line 4"
+  },
+  {
+    "machineId": "Machine 7",
+    "site": "Site 1",
+    "productionLine": "Line 1"
+  },
+  {
+    "machineId": "Machine 8",
+    "site": "Site 1",
+    "productionLine": "Line 2"
+  },
+  {
+    "machineId": "Machine 9",
+    "site": "Site 1",
+    "productionLine": "Line 2"
+  },
+  {
+    "machineId": "Machine 10",
+    "site": "Site 2",
+    "productionLine": "Line 3"
+  },
+  {
+    "machineId": "Machine 11",
+    "site": "Site 2",
+    "productionLine": "Line 3"
+  },
+  {
+    "machineId": "Machine 12",
+    "site": "Site 2",
+    "productionLine": "Line 4"
+  },
+  {
+    "machineId": "Machine 13",
+    "site": "Site 1",
+    "productionLine": "Line 1"
+  },
+  {
+    "machineId": "Machine 14",
+    "site": "Site 1",
+    "productionLine": "Line 1"
+  },
+  {
+    "machineId": "Machine 15",
+    "site": "Site 1",
+    "productionLine": "Line 2"
+  },
+  {
+    "machineId": "Machine 16",
+    "site": "Site 2",
+    "productionLine": "Line 3"
+  },
+  {
+    "machineId": "Machine 17",
+    "site": "Site 2",
+    "productionLine": "Line 4"
+  },
+  {
+    "machineId": "Machine 18",
+    "site": "Site 2",
+    "productionLine": "Line 4"
+  },
+  {
+    "machineId": "Machine 19",
+    "site": "Site 1",
+    "productionLine": "Line 1"
+  },
+  {
+    "machineId": "Machine 20",
+    "site": "Site 1",
+    "productionLine": "Line 2"
+  },
+  {
+    "machineId": "Machine 21",
+    "site": "Site 1",
+    "productionLine": "Line 2"
+  },
+  {
+    "machineId": "Machine 22",
+    "site": "Site 2",
+    "productionLine": "Line 4"
+  },
+  {
+    "machineId": "Machine 23",
+    "site": "Site 2",
+    "productionLine": "Line 4"
+  }
+]

@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import KpiSelector from '../KpiSelector/KpiSelector';
 import Chart from '../Chart/Chart';
+import {KPI} from "../../api/DataStructures";
+import {getKpiList, getMachineList} from "../../api/PersistentDataManager";
 
 const smoothData = (data: number[], alpha: number = 0.3): number[] => {
     const ema = [];
@@ -12,7 +14,7 @@ const smoothData = (data: number[], alpha: number = 0.3): number[] => {
 };
 
 const DataView: React.FC = () => {
-    const [kpi, setKpi] = useState('Idle time');
+    const [kpi, setKpi] = useState<KPI>(getKpiList()[0]);
     const [timeFrame, setTimeFrame] = useState('Month');
     const [graphType, setGraphType] = useState('Pie');
     const [filters, setFilters] = useState({ site: 'All', productionLine: 'All', machines: 'All' });
@@ -21,7 +23,7 @@ const DataView: React.FC = () => {
     const fetchChartData = async () => {
         console.log('Fetching data with:', { kpi, timeFrame, graphType, filters });
 
-        let filteredData = mockData;
+        let filteredData = getMachineList();
 
         // Apply site filter
         if (filters.site !== 'All') {
@@ -30,12 +32,12 @@ const DataView: React.FC = () => {
 
         // Apply production line filter
         if (filters.productionLine !== 'All') {
-            filteredData = filteredData.filter((data) => data.productionLine === filters.productionLine);
+            filteredData = filteredData.filter((data) => data.line === filters.productionLine);
         }
 
         // Apply machine filter
         if (filters.machines !== 'All') {
-            filteredData = filteredData.filter((data) => data.machine === filters.machines);
+            filteredData = filteredData.filter((data) => data.machineId === filters.machines);
         }
 
         if (graphType === 'Line' || graphType === 'Area') {
@@ -49,7 +51,7 @@ const DataView: React.FC = () => {
                 const smoothedData = smoothData(rawData);
 
                 filteredData.forEach((machine, idx) => {
-                    entry[machine.machine] = smoothedData[idx]; // Apply smoothed values
+                    entry[machine.machineId] = smoothedData[idx]; // Apply smoothed values
                 });
                 return entry;
             });
@@ -61,7 +63,7 @@ const DataView: React.FC = () => {
         } else {
             // Generate categorical data with applied filters
             const categoricalData = filteredData.map((data) => ({
-                name: data.machine,
+                name: data.machineId,
                 value: Math.round(Math.random() * 100),
             }));
 
@@ -70,7 +72,7 @@ const DataView: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col w-full h-full space-y-5 items-center">
+        <div className="flex-1 flex-col w-full h-full space-y-5 p-6 items-center">
             {/* KPI Selector and Generate Button */}
             <KpiSelector
                 kpi={kpi}
@@ -86,37 +88,10 @@ const DataView: React.FC = () => {
 
             {/* Chart Section */}
             <div className={` shadow-md p-5 rounded-lg bg-white flex-1 w-full`}>
-                <Chart data={chartData} graphType={graphType} />
+                <Chart data={chartData} graphType={graphType} kpi = {kpi}/>
             </div>
         </div>
     );
 };
 
 export default DataView;
-
-// Mock data
-export const mockData = [
-    {machine: 'Machine 1', site: 'Site 1', productionLine: 'Line 1'},
-    {machine: 'Machine 2', site: 'Site 1', productionLine: 'Line 1'},
-    {machine: 'Machine 3', site: 'Site 1', productionLine: 'Line 2'},
-    {machine: 'Machine 4', site: 'Site 2', productionLine: 'Line 3'},
-    {machine: 'Machine 5', site: 'Site 2', productionLine: 'Line 3'},
-    {machine: 'Machine 6', site: 'Site 2', productionLine: 'Line 4'},
-    {machine: 'Machine 7', site: 'Site 1', productionLine: 'Line 1'},
-    {machine: 'Machine 8', site: 'Site 1', productionLine: 'Line 2'},
-    {machine: 'Machine 9', site: 'Site 1', productionLine: 'Line 2'},
-    {machine: 'Machine 10', site: 'Site 2', productionLine: 'Line 3'},
-    {machine: 'Machine 11', site: 'Site 2', productionLine: 'Line 3'},
-    {machine: 'Machine 12', site: 'Site 2', productionLine: 'Line 4'},
-    {machine: 'Machine 13', site: 'Site 1', productionLine: 'Line 1'},
-    {machine: 'Machine 14', site: 'Site 1', productionLine: 'Line 1'},
-    {machine: 'Machine 15', site: 'Site 1', productionLine: 'Line 2'},
-    {machine: 'Machine 16', site: 'Site 2', productionLine: 'Line 3'},
-    {machine: 'Machine 17', site: 'Site 2', productionLine: 'Line 4'},
-    {machine: 'Machine 18', site: 'Site 2', productionLine: 'Line 4'},
-    {machine: 'Machine 19', site: 'Site 1', productionLine: 'Line 1'},
-    {machine: 'Machine 20', site: 'Site 1', productionLine: 'Line 2'},
-    {machine: 'Machine 21', site: 'Site 1', productionLine: 'Line 2'},
-    {machine: 'Machine 22', site: 'Site 2', productionLine: 'Line 4'},
-    {machine: 'Machine 23', site: 'Site 2', productionLine: 'Line 4'},
-];

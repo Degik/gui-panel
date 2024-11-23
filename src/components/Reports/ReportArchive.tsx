@@ -100,7 +100,7 @@ const ReportArchive: React.FC = () => {
                         </div>
                         {expanded === report.id && (
                             <div className="p-4 border-t border-gray-200">
-                                <p className="text-gray-600 mb-4">{report.description}</p>
+                                <p className="text-gray-600 mb-4 font-normal text-start ">{report.description}</p>
                                 <div className="flex space-x-4">
                                     <button className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
                                         View

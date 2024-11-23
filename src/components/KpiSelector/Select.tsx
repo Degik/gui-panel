@@ -19,7 +19,7 @@ const Select: React.FC<SelectProps> = ({ label, description, value, options, ico
             {description && <p className="text-sm text-gray-500 font-normal">{description}</p>}
 
             {/* Select Wrapper */}
-            <div className="relative w-52 font-normal"> {/* Adjust the width */}
+            <div className="relative max-w-52 font-normal"> {/* Adjust the width */}
                 <select
                     className="block w-full p-2.5 pl-10 pr-4 text-sm text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
                     value={value}

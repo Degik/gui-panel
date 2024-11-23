@@ -1,19 +1,21 @@
 import { useParams } from 'react-router-dom';
 import {useEffect, useState} from "react";
+import {DashboardFolder, DashboardLayout} from "../../api/DataStructures";
 
 const Dashboard = () => {
     // Use useParams to get the dynamic route parameter 'dashboardId'
     const { dashboardId } = useParams<{ dashboardId: string }>();
-    const [dashboardData, setDashboardData] = useState<any>(null); // Replace 'any' with a proper type for your data
+    const [dashboardData, setDashboardData] = useState<DashboardLayout>(new DashboardLayout("","",[])); // Replace 'any' with a proper type for your data
 
     useEffect(() => {
         // Fetch data based on dashboardId
         const fetchDashboardData = async () => {
             try {
                 // Replace this with your data-fetching logic
-                const response = await fetch(`/api/dashboard/${dashboardId}`);
+                const response = await fetch(`/mockData/dashboards/${dashboardId}.json`);
                 const data = await response.json();
-                setDashboardData(data);
+                let dash: DashboardLayout = DashboardLayout.decode(data);
+                setDashboardData(dash);
             } catch (error) {
                 console.error('Error fetching dashboard data:', error);
             }

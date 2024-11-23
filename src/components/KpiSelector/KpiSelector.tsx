@@ -2,15 +2,19 @@ import React from 'react';
 import Select from './Select';
 import GraphTypeSelector from './GraphTypeSelector';
 import FilterOptions from './FilterOptions';
-import {mockData} from "../DataView/DataView";
+import {getKpiList} from "../../api/PersistentDataManager";
+import {KPI} from "../../api/DataStructures";
+import KpiSelect from "./KpiSelect";
 
-const getKPIs = (): string[] => {
+const kpis = (): string[] => {
     return ['energy_consumption', 'energy_cost', 'energy_production', 'energy_saving', 'energy_efficiency'];
 }
 
+const chevronDownIcon = "https://cdn.builder.io/api/v1/image/assets/TEMP/ee28ffec5ddc59d7906d5950c4861da7e441f40e4f9a912ad0c4390bc360c6bf?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130";
+
 const KpiSelector: React.FC<{
-    kpi: string;
-    setKpi: (value: string) => void;
+    kpi: KPI;
+    setKpi: (value: KPI) => void;
     timeFrame: string;
     setTimeFrame: (value: string) => void;
     graphType: string;
@@ -24,13 +28,13 @@ const KpiSelector: React.FC<{
             {/* KPI, Time Frame and Graph Type Selectors in one line */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {/* KPI Selector */}
-                <Select
+                <KpiSelect
                     label="KPI"
                     description={`Select the KPI you want to visualize`}
                     value={kpi}
-                    options={getKPIs()}
+                    options={getKpiList()}
                     onChange={setKpi}
-                    iconSrc="https://cdn.builder.io/api/v1/image/assets/TEMP/ee28ffec5ddc59d7906d5950c4861da7e441f40e4f9a912ad0c4390bc360c6bf?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130"
+                    iconSrc={chevronDownIcon}
                 />
 
                 {/* Time Frame Selector */}
@@ -50,7 +54,7 @@ const KpiSelector: React.FC<{
             </div>
 
             {/* Filters Section */}
-            <FilterOptions filters={filters} onChange={setFilters} mockData={mockData}/>
+            <FilterOptions filters={filters} onChange={setFilters}/>
 
             {/* Generate Button */}
             <div className="text-center">

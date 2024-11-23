@@ -14,17 +14,19 @@ import {
     Cell,
     ResponsiveContainer, Area, AreaChart,
 } from 'recharts';
+import {KPI} from "../../api/DataStructures";
 
 interface ChartProps {
-    data: any[];
-    graphType: string;
+    data: any[],
+    graphType: string,
+    kpi?: KPI
 }
 
 const COLORS = ['#8884d8', '#83a6ed', '#8dd1e1', '#82ca9d', '#a4de6c', '#d0ed57'];
 
 const formatDate = (timestamp: string) => {
     const date = new Date(timestamp);
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }); // Formats as HH:mm
+    return date.toLocaleTimeString([], {hour: '2-digit', minute: '2-digit'}); // Formats as HH:mm
 };
 
 const formatDateEx = (timestamp: string) => {
@@ -33,7 +35,7 @@ const formatDateEx = (timestamp: string) => {
 };
 
 
-const DrillDownTooltip = ({active, payload, label}: any) => {
+const DrillDownTooltip = ({active, payload, label, kpi}: any) => {
     if (active && payload && payload.length) {
         return (
             <div
@@ -46,14 +48,14 @@ const DrillDownTooltip = ({active, payload, label}: any) => {
                 }}
             >
                 <p style={{margin: 0, fontWeight: 'bold'}}>{label}</p>
-                <p style={{margin: 0}}>{`${payload[0].name}: ${payload[0].value}`}</p>
+                <p style={{margin: 0}}>{`${payload[0].name}: ${payload[0].value} ${kpi?.measure || ''}`}</p>
             </div>
         );
     }
     return null;
 };
 
-const LineTooltip = ({ active, payload, label }: any) => {
+const LineTooltip = ({active, payload, label, kpi}: any) => {
     if (active && payload && payload.length) {
         return (
             <div
@@ -65,7 +67,7 @@ const LineTooltip = ({ active, payload, label }: any) => {
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 }}
             >
-                <p style={{ margin: 0, fontWeight: 'bold' }}>{formatDateEx(label)}</p>
+                <p style={{margin: 0, fontWeight: 'bold'}}>{formatDateEx(label)}</p>
                 {payload.map((entry: any, index: number) => (
                     <p
                         key={`tooltip-${index}`}
@@ -74,7 +76,7 @@ const LineTooltip = ({ active, payload, label }: any) => {
                             color: entry.stroke, // Match the line's color
                         }}
                     >
-                        {`${entry.name}: ${entry.value}`}
+                        {`${entry.name}: ${entry.value} ${kpi?.measure || ''}`}
                     </p>
                 ))}
             </div>
@@ -83,7 +85,7 @@ const LineTooltip = ({ active, payload, label }: any) => {
     return null;
 };
 
-const Chart: React.FC<ChartProps> = ({data, graphType}) => {
+const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
     if (!data || data.length === 0) {
         return (
             <p style={{textAlign: 'center', marginTop: '20px', color: '#555'}}>
@@ -98,24 +100,24 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                 <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={data}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
-                        <XAxis dataKey="name" tick={{ fill: '#666' }}/>
-                        <YAxis tick={{ fill: '#666' }}/>
-                        <Tooltip content={<DrillDownTooltip/>}/>
-                        <Legend />
-                        <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
+                        <XAxis dataKey="name" tick={{fill: '#666'}}/>
+                        <YAxis tick={{fill: '#666'}}/>
+                        <Tooltip content={<DrillDownTooltip kpi={kpi}/>}/>
+                        <Legend/>
+                        <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]}/>
                     </BarChart>
                 </ResponsiveContainer>
             );
         case 'BarH': // Horizontal Bar Chart
             return (
-                <ResponsiveContainer width="100%" height={400} >
+                <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={data} layout='horizontal'>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
-                        <XAxis type="number" tick={{ fill: '#666' }}/>
-                        <YAxis dataKey="name" tick={{ fill: '#666' }}/>
-                        <Tooltip content={<DrillDownTooltip />} />
-                        <Legend />
-                        <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]} />
+                        <XAxis type="number" tick={{fill: '#666'}}/>
+                        <YAxis dataKey="name" tick={{fill: '#666'}}/>
+                        <Tooltip content={<DrillDownTooltip/>}/>
+                        <Legend/>
+                        <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]}/>
                     </BarChart>
                 </ResponsiveContainer>
             );
@@ -124,15 +126,15 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
             return (
                 <ResponsiveContainer width="100%" height={400}>
                     <LineChart data={data}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
                         <XAxis
                             dataKey="timestamp"
-                            tick={{ fill: '#666' }}
+                            tick={{fill: '#666'}}
                             tickFormatter={formatDate}  // Apply the custom formatting
                         />
-                        <YAxis tick={{ fill: '#666' }} />
-                        <Tooltip content={<LineTooltip />} trigger={"hover"} />
-                        <Legend />
+                        <YAxis tick={{fill: '#666'}}/>
+                        <Tooltip content={<LineTooltip/>} trigger={"hover"}/>
+                        <Legend/>
                         {Object.keys(data[0] || {})
                             .filter((key) => key !== 'timestamp') // Exclude the timestamp key
                             .map((machine, index) => (
@@ -142,8 +144,8 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
                                     dataKey={machine} // Use the machine's name as the key
                                     stroke={COLORS[index % COLORS.length]}
                                     strokeWidth={2}
-                                    dot={{ r: 5 }}
-                                    activeDot={{ r: 8 }}
+                                    dot={{r: 5}}
+                                    activeDot={{r: 8}}
                                     name={machine}
                                 />
                             ))}
@@ -155,15 +157,15 @@ const Chart: React.FC<ChartProps> = ({data, graphType}) => {
             return (
                 <ResponsiveContainer width="100%" height={400}>
                     <AreaChart data={data}>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
                         <XAxis
                             dataKey="timestamp"
-                            tick={{ fill: '#666' }}
+                            tick={{fill: '#666'}}
                             tickFormatter={formatDate}  // Apply the custom formatting
                         />
-                        <YAxis tick={{ fill: '#666' }} />
-                        <Tooltip content={<LineTooltip />} trigger={"hover"} />
-                        <Legend />
+                        <YAxis tick={{fill: '#666'}}/>
+                        <Tooltip content={<LineTooltip/>} trigger={"hover"}/>
+                        <Legend/>
                         {Object.keys(data[0] || {}).filter((key) => key !== 'timestamp').map((machine, index) => (
                             <Area
                                 key={machine}

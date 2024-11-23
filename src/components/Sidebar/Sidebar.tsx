@@ -1,22 +1,22 @@
 import React, {useEffect, useState} from 'react';
 import SidebarSection from './SidebarSection';
 import {mockDashboards} from "../Home";
+import {DashboardFolder, DashboardPointer} from "../../api/DataStructures";
+import {SidebarItemProps} from "./SidebarItem";
 
 export const pointIcon = 'https://cdn.builder.io/api/v1/image/assets/TEMP/e4f31bc08d7f9cce9aa4820b2adc97643d3b0c001526273b80178ee6bf890b69?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130';
 export const folderIcon = 'https://cdn.builder.io/api/v1/image/assets/TEMP/eaf772e37067af09780cab33ecbf00699526f2539b536d7e2dac43b2122526b2?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130';
 export const pieIcon = 'https://cdn.builder.io/api/v1/image/assets/TEMP/0949995bd2a21ce720d84c11dc64463261305492e6cd6409f1dd6840a7747be9?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130';
 const DashboardSidebar: React.FC = () => {
 
-    require('./icons/kpi.svg');
-    require('./icons/forecast.svg');
     const sectionsItems = [
         {
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/a2d40f2dc06da50836fbfaf464c0a55962656ee10fce9369f212feb80de42c46?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',
+            icon: '/icons/user.svg',
             text: 'User Settings',
             path: '/user-settings'
         },
         {
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cb7c1de2b136e197f1651cffbbbacb0281af7137538dad2c0ab0fee4449f1b93?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',
+            icon: 'icons/log.svg',
             text: 'Reports',
             path: '/reports'
         },
@@ -26,7 +26,7 @@ const DashboardSidebar: React.FC = () => {
             path: '/data-view'
         },
         {
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/cb7c1de2b136e197f1651cffbbbacb0281af7137538dad2c0ab0fee4449f1b93?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',
+            icon: 'icons/log.svg',
             text: 'Log',
             path: '/log'
         },
@@ -39,28 +39,54 @@ const DashboardSidebar: React.FC = () => {
         {icon: './icons/forecast.svg', text: 'Forecasting', path: '/forecasts'},
     ];
 
+    const formatDashboards = (folders: DashboardFolder[]): SidebarItemProps[] => {
+        const formatted: SidebarItemProps[] = [];
+
+        formatted.push({icon: pieIcon, text: 'Overview', path: '/dashboards/overview'})
+        folders.forEach((folder) => {
+            const currentPath = `/dashboards/${folder.id}`;
+
+            // Format the folder itself
+            formatted.push({
+                text: folder.name,
+                path: currentPath,  // Path will be the folder ID
+                icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/eaf772e37067af09780cab33ecbf00699526f2539b536d7e2dac43b2122526b2?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130'
+            });
+
+            // Recursively format children
+            folder.children.forEach((child) => {
+                if (child instanceof DashboardFolder) {
+                    // Recursively process child folders
+                    formatted.push(...formatDashboards([child]));
+                } else {
+                    { // Add pointers (endpoints) directly
+                        formatted.push({
+                            text: child.name,
+                            path: `${currentPath}/${child.id}`,  // Append pointer ID to the path
+                            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e4f31bc08d7f9cce9aa4820b2adc97643d3b0c001526273b80178ee6bf890b69?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',  // Use pointIcon for individual dashboards
+                            nested: true
+                        });
+                    }
+                }
+            });
+        });
+
+        return formatted;
+    };
+
 
     useEffect(() => {
         const fetchDashboards = async () => {
             try {
-                // Simulate fetching dashboards from an API
-                //const response = await fetch('/api/dashboards');
-                //const data = await response.json();
+                // Fetch the JSON data
+                const response = await fetch('/mockData/dashboards.json'); // Adjust path as needed
+                const data = await response.json();
 
-                // Transform the data into the required format for the SidebarSection
-                const formattedDashboards = [
-                    {
-                        text: 'Overview',
-                        path: '/dashboards/overview',
-                        icon: pieIcon, // The specific icon for Overview
-                    },
-                    ...mockDashboards.map(dashboard => ({
-                        text: dashboard.name,
-                        path: `/dashboards/${dashboard.id}`,
-                        icon: dashboard.type === 'folder' ? folderIcon : pointIcon,
-                    })),
-                ];
+                // Decode the JSON into DashboardFolder instances
+                const folderData: DashboardFolder[] = data.map((folderJson: any) => DashboardFolder.decode(folderJson));
 
+                // Format the data for the sidebar
+                const formattedDashboards = formatDashboards(folderData);
 
                 setDashboards(formattedDashboards);
             } catch (error) {
@@ -72,27 +98,8 @@ const DashboardSidebar: React.FC = () => {
     }, []);
 
     const [dashboardsItems, setDashboards] = useState<
-        { text: string; path: string; icon: string }[]
+        SidebarItemProps[]
     >([]);
-
-    const dashboards = [
-        {icon: pieIcon, text: 'Overview', path: '/dashboards/overview'},
-        {
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/eaf772e37067af09780cab33ecbf00699526f2539b536d7e2dac43b2122526b2?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',
-            text: 'Production Lines Dashboards',
-            path: '/dashboards/production-lines'
-        },
-        {
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e4f31bc08d7f9cce9aa4820b2adc97643d3b0c001526273b80178ee6bf890b69?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',
-            text: 'Production Line #1',
-            path: '/dashboards/line-1'
-        },
-        {
-            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e3b90cb81ae2d13b7f436f0b1eb6c2f6bc7f9ccd539fab9a05bf5ea532afb99f?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',
-            text: 'Saved Dashboard Folder Name',
-            path: '/dashboards/saved-folder'
-        },
-    ];
 
     return (
         <aside className="bg-white border-r border-gray-200 flex flex-col items-center w-fit h-screen p-3">
@@ -110,7 +117,6 @@ const DashboardSidebar: React.FC = () => {
             <SidebarSection title="Sections" items={sectionsItems}/>
             <SidebarSection title="Dashboards" items={dashboardsItems}/>
         </aside>
-
     );
 };
 

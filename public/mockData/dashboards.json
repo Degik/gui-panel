@@ -1,0 +1,26 @@
+[
+  {
+    "id": "Lines",
+    "name": "Production Lines Dashboards",
+    "type": "folder",
+    "children": [
+      {
+        "id": "Lines/1",
+        "name": "Production Line #1",
+        "type": "point"
+      }
+    ]
+  },
+  {
+    "id": "placeholder_f",
+    "name": "Saved Dashboard Folder Name",
+    "type": "folder",
+    "children": [
+      {
+        "id": "placeholder_d",
+        "name": "Saved Dashboard Name",
+        "type": "point"
+      }
+    ]
+  }
+]

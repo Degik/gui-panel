@@ -1,36 +1,36 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import {getMachineList} from "../../api/PersistentDataManager";
 
 interface FilterOptionsProps {
     filters: { site: string; productionLine: string; machines: string };
     onChange: (filters: { site: string; productionLine: string; machines: string }) => void;
-    mockData: { machine: string; site: string; productionLine: string }[]; // Pass in mockData
 }
 
-const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange, mockData }) => {
+const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange }) => {
     const [isExpanded, setIsExpanded] = useState(false); // State to track whether the options are expanded
 
     // Helper function to get compatible production lines based on selected site
     const getCompatibleProductionLines = useCallback((site: string) => {
         // Filter mockData based on the site, if site is not 'All'
-        const filterCondition = mockData.filter((data) => site === 'All' || data.site === site);
+        const filterCondition = getMachineList().filter((data) => site === 'All' || data.site === site);
 
         // Return unique production lines from the filtered data
-        return ['All', ...new Set(filterCondition.map((data) => data.productionLine))];
-    },[mockData]);
+        return ['All', ...new Set(filterCondition.map((data) => data.line))];
+    },[]);
 
     // Helper function to get compatible machines based on selected site and production line
     const getCompatibleMachines = useCallback((site: string, productionLine: string) => {
         // Build the filter condition based on 'site' and 'productionLine'
-        const filterCondition = mockData.filter((data) => {
+        const filterCondition = getMachineList().filter((data) => {
             return (
                 (site === 'All' || data.site === site) &&
-                (productionLine === 'All' || data.productionLine === productionLine)
+                (productionLine === 'All' || data.line === productionLine)
             );
         });
 
         // Return unique machine names from the filtered data
-        return ['All', ...new Set(filterCondition.map((data) => data.machine))];
-    }, [mockData]);
+        return ['All', ...new Set(filterCondition.map((data) => data.machineId))];
+    }, []);
 
     // Effect to update productionLine options when site changes
     useEffect(() => {
@@ -57,15 +57,15 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange, mockDa
     };
 
     return (
-        <div className="p-6 bg-gray-20 rounded-lg shadow-md">
+        <div className="max-h-fit max-w-fit">
             {/* Header with expand/collapse functionality */}
             <div className="flex justify-between items-center mb-4">
-                <div className="text-sm font-semibold text-gray-700">More Options</div>
+                <div className="text-sm font-semibold text-gray-700">Filtering Options</div>
                 <img
                     loading="lazy"
                     src="https://cdn.builder.io/api/v1/image/assets/TEMP/6c33b492660f47ebadbd4ddc262746d4b9184c091300184241c32c88890005c5?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130"
                     alt="Options Icon"
-                    className={`w-5 h-5 cursor-pointer transform transition-transform ${(isExpanded ? '' : 'rotate-180')}`}
+                    className={`cursor-pointer transform transition-transform ${(isExpanded ? '' : 'rotate-180')}`}
                     onClick={() => setIsExpanded(!isExpanded)} // Toggle the expansion
                 />
             </div>
@@ -74,9 +74,7 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange, mockDa
             {isExpanded && (
                 <div>
                     {/* Filter by section */}
-                    <div className="flex items-center mb-4 space-x-4">
-                        <div className="text-gray-600 text-sm font-medium">Filter by:</div>
-
+                    <div className="flex items-center mb-4 space-x-4 font-normal">
                         {/* Horizontal Filters Row */}
                         <div className="flex space-x-4">
                             {/* Site Filter */}
