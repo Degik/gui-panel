@@ -18,6 +18,7 @@ export class Machine {
             machineId: instance.machineId,
             site: instance.site,
             type: instance.type,
+            productionLine: instance.line,
         };
     }
 
@@ -25,13 +26,13 @@ export class Machine {
         if (
             typeof json.machineId !== "string" ||
             typeof json.site !== "string" ||
-            json.type && typeof json.type !== "string" ||
-            json.line && typeof json.line !== "string"
+            (json.type && typeof json.type !== "string") ||
+            (json.productionLine && typeof json.productionLine !== "string")
         ) {
             console.log(json);
             throw new Error("Invalid JSON structure for Machine");
         }
-        return new Machine(json.machineId, json.site, json.type);
+        return new Machine(json.machineId, json.site, json.type, json.productionLine);
     }
 
 }
@@ -75,13 +76,14 @@ export class KPI {
     }
 
 }
-const supportedGraphTypes = ["line", "bar", "pie"];
+
+const supportedGraphTypes = ["line", "barv", "pie"];
 
 export class DashboardEntry {
-    kpi: string | number;
+    kpi: number;
     graph_type: string;
 
-    constructor(kpi: string | number, graph_type: string) {
+    constructor(kpi: number, graph_type: string) {
         this.kpi = kpi;
         this.graph_type = graph_type;
     }
@@ -145,19 +147,37 @@ export class DashboardLayout {
 }
 
 export class DashboardPointer{
-    id: number; // id for the internal path
+    id: string; // id for the internal path
     name: string; //displayed name in breadcrumb
 
-    constructor(id: number, name: string) {
+    constructor(id: string, name: string) {
         this.id = id;
         this.name = name;
+    }
+
+    static encode(instance: DashboardPointer): Record<string, any> {
+        return {
+            id: instance.id,
+            name: instance.name,
+        };
+    }
+
+    static decode(json: Record<string, any>): DashboardPointer {
+        if (
+            typeof json.id !== "string" ||
+            typeof json.name !== "string"
+        ) {
+            console.log(json);
+            throw new Error("Invalid JSON structure for DashboardPointer");
+        }
+        return new DashboardPointer(json.id, json.name);
     }
 }
 
 export class DashboardFolder {
     id: string; // id for the internal path
     name: string; //displayed name in breadcrumb
-    children: (DashboardFolder | DashboardPointer)[] //another folder or the id of a layout to load
+    children: (DashboardFolder | DashboardPointer)[] //another folder or the pointer to the layout to load
 
     constructor(id: string, name: string, children: (DashboardFolder | DashboardPointer)[]) {
         this.id = id;
@@ -174,7 +194,7 @@ export class DashboardFolder {
                 if (child instanceof DashboardFolder) {
                     return DashboardFolder.encode(child); // Encode DashboardFolder
                 } else {
-                    return child; // Encode DashboardLayout id
+                    return DashboardPointer.encode(child); // Encode DashboardLayout id
                 }
             }),
         };
@@ -193,10 +213,10 @@ export class DashboardFolder {
 
         // Decode each child in the children array
         const children = json.children.map((childJson) => {
-            if (childJson.views) {
-                return DashboardLayout.decode(childJson); // Decode DashboardLayout
+            if (!childJson.children) {
+                return DashboardPointer.decode(childJson); // Decode DashboardPointer
             } else {
-                return childJson; // Decode DashboardFolder id
+                return DashboardFolder.decode(childJson); // Decode DashboardFolder
             }
         });
 

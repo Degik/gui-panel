@@ -1,20 +1,23 @@
 import React from 'react';
 import {
-    BarChart,
+    Area,
+    AreaChart,
     Bar,
-    LineChart,
-    Line,
-    PieChart,
-    Pie,
-    Tooltip,
-    Legend,
+    BarChart,
     CartesianGrid,
+    Cell,
+    Legend,
+    Line,
+    LineChart,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
     XAxis,
     YAxis,
-    Cell,
-    ResponsiveContainer, Area, AreaChart,
 } from 'recharts';
 import {KPI} from "../../api/DataStructures";
+import Trend from "./Trend";
 
 interface ChartProps {
     data: any[],
@@ -37,6 +40,7 @@ const formatDateEx = (timestamp: string) => {
 
 const DrillDownTooltip = ({active, payload, label, kpi}: any) => {
     if (active && payload && payload.length) {
+        console.log(label)
         return (
             <div
                 style={{
@@ -47,8 +51,10 @@ const DrillDownTooltip = ({active, payload, label, kpi}: any) => {
                     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                 }}
             >
-                <p style={{margin: 0, fontWeight: 'bold'}}>{label}</p>
-                <p style={{margin: 0}}>{`${payload[0].name}: ${payload[0].value} ${kpi?.measure || ''}`}</p>
+                <p style={{
+                    margin: 0,
+                    fontWeight: 'normal'
+                }}>{`${payload[0].payload.name}: ${payload[0].value} ${kpi?.unit || ''}`}</p>
             </div>
         );
     }
@@ -76,7 +82,7 @@ const LineTooltip = ({active, payload, label, kpi}: any) => {
                             color: entry.stroke, // Match the line's color
                         }}
                     >
-                        {`${entry.name}: ${entry.value} ${kpi?.measure || ''}`}
+                        {`${entry.name}: ${entry.value.toFixed(2)} ${kpi?.unit || ''}`}
                     </p>
                 ))}
             </div>
@@ -95,7 +101,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
     }
 
     switch (graphType) {
-        case 'BarV': // Vertical Bar Chart
+        case 'barv': // Vertical Bar Chart
             return (
                 <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={data}>
@@ -108,21 +114,20 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
                     </BarChart>
                 </ResponsiveContainer>
             );
-        case 'BarH': // Horizontal Bar Chart
+        case 'barh': // Horizontal Bar Chart
             return (
                 <ResponsiveContainer width="100%" height={400}>
-                    <BarChart data={data} layout='horizontal'>
+                    <BarChart data={data} layout='vertical'>
                         <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0"/>
                         <XAxis type="number" tick={{fill: '#666'}}/>
-                        <YAxis dataKey="name" tick={{fill: '#666'}}/>
-                        <Tooltip content={<DrillDownTooltip/>}/>
+                        <YAxis type="category" dataKey="name" tick={{fill: '#666'}}/>
+                        <Tooltip content={<DrillDownTooltip kpi={kpi}/>}/>
                         <Legend/>
-                        <Bar dataKey="value" fill="#8884d8" radius={[10, 10, 0, 0]}/>
+                        <Bar dataKey="value" fill="#8884d8" radius={[0, 10, 10, 0]}/>
                     </BarChart>
                 </ResponsiveContainer>
             );
-
-        case 'Line':
+        case 'line':
             return (
                 <ResponsiveContainer width="100%" height={400}>
                     <LineChart data={data}>
@@ -133,7 +138,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
                             tickFormatter={formatDate}  // Apply the custom formatting
                         />
                         <YAxis tick={{fill: '#666'}}/>
-                        <Tooltip content={<LineTooltip/>} trigger={"hover"}/>
+                        <Tooltip content={<LineTooltip kpi={kpi}/>} trigger={"hover"}/>
                         <Legend/>
                         {Object.keys(data[0] || {})
                             .filter((key) => key !== 'timestamp') // Exclude the timestamp key
@@ -152,8 +157,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
                     </LineChart>
                 </ResponsiveContainer>
             );
-
-        case 'Area':
+        case 'area':
             return (
                 <ResponsiveContainer width="100%" height={400}>
                     <AreaChart data={data}>
@@ -164,7 +168,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
                             tickFormatter={formatDate}  // Apply the custom formatting
                         />
                         <YAxis tick={{fill: '#666'}}/>
-                        <Tooltip content={<LineTooltip/>} trigger={"hover"}/>
+                        <Tooltip content={<LineTooltip kpi={kpi}/>} trigger={"hover"}/>
                         <Legend/>
                         {Object.keys(data[0] || {}).filter((key) => key !== 'timestamp').map((machine, index) => (
                             <Area
@@ -180,8 +184,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
                     </AreaChart>
                 </ResponsiveContainer>
             );
-
-        case 'Pie':
+        case 'pie':
             return (
                 <ResponsiveContainer width="100%" height={400}>
                     <PieChart>
@@ -195,7 +198,7 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
                             fill="#8884d8"
                             label={(entry) => `${entry.name}`}
                         >
-                            {data.map((entry, index) => (
+                            {data.map((_entry, index) => (
                                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]}/>
                             ))}
                         </Pie>
@@ -203,6 +206,13 @@ const Chart: React.FC<ChartProps> = ({data, graphType, kpi}) => {
                     </PieChart>
                 </ResponsiveContainer>
             );
+        case 'trend':
+            return (
+                <Trend
+                    data={data} kpiName={kpi} timeFrameLabel='Time Frame'
+                />
+            )
+
         default:
             return (
                 <p style={{textAlign: 'center', marginTop: '20px', color: '#555'}}>

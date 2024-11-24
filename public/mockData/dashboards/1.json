@@ -1,17 +1,17 @@
 {
-  "id": "overview",
-  "name": "Overview Dashboard",
+  "id": "1",
+  "name": "Dashboard 1",
   "views": [
     {
-      "kpi": "1",
+      "kpi": "10",
       "graph_type": "line"
     },
     {
-      "kpi": "4",
+      "kpi": "14",
       "graph_type": "barv"
     },
     {
-      "kpi": "7",
+      "kpi": "17",
       "graph_type": "pie"
     }
   ]

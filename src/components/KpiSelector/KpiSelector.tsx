@@ -6,10 +6,6 @@ import {getKpiList} from "../../api/PersistentDataManager";
 import {KPI} from "../../api/DataStructures";
 import KpiSelect from "./KpiSelect";
 
-const kpis = (): string[] => {
-    return ['energy_consumption', 'energy_cost', 'energy_production', 'energy_saving', 'energy_efficiency'];
-}
-
 const chevronDownIcon = "https://cdn.builder.io/api/v1/image/assets/TEMP/ee28ffec5ddc59d7906d5950c4861da7e441f40e4f9a912ad0c4390bc360c6bf?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130";
 
 const KpiSelector: React.FC<{

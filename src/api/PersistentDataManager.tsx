@@ -1,5 +1,5 @@
 //in this file we store the temporary memory the data loaded from json and save to json the files for persistency
-import {KPI, Machine, DashboardLayout} from "./DataStructures";
+import {KPI, Machine} from "./DataStructures";
 
 export async function loadFrom<T>(filePath: string, decoder: (json: Record<string, any>) => T): Promise<T[]> {
     try {
@@ -22,7 +22,6 @@ export async function loadFrom<T>(filePath: string, decoder: (json: Record<strin
 
 let KpiList: KPI[] = await loadFrom('/mockData/kpis.json', KPI.decode);
 let MachineList: Machine[] = await loadFrom('/mockData/machines.json', Machine.decode)
-//let Dashboards: DashboardLayout[] = await loadFrom('mockData/dashboards.json', DashboardLayout.decode)
 
 export function getKpiList(): KPI[] {
     return KpiList;

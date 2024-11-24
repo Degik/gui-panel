@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {getMachineList} from "../../api/PersistentDataManager";
 
 interface FilterOptionsProps {
@@ -9,48 +9,40 @@ interface FilterOptionsProps {
 const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange }) => {
     const [isExpanded, setIsExpanded] = useState(false); // State to track whether the options are expanded
 
-    // Helper function to get compatible production lines based on selected site
-    const getCompatibleProductionLines = useCallback((site: string) => {
-        // Filter mockData based on the site, if site is not 'All'
-        const filterCondition = getMachineList().filter((data) => site === 'All' || data.site === site);
-
-        // Return unique production lines from the filtered data
+    // Memoize compatible production lines to avoid re-filtering on each render
+    const compatibleProductionLines = useMemo(() => {
+        const filterCondition = getMachineList().filter((data) => filters.site === 'All' || data.site === filters.site);
         return ['All', ...new Set(filterCondition.map((data) => data.line))];
-    },[]);
+    }, [filters.site]);
 
-    // Helper function to get compatible machines based on selected site and production line
-    const getCompatibleMachines = useCallback((site: string, productionLine: string) => {
-        // Build the filter condition based on 'site' and 'productionLine'
+    // Memoize compatible machines to avoid re-filtering on each render
+    const compatibleMachines = useMemo(() => {
         const filterCondition = getMachineList().filter((data) => {
             return (
-                (site === 'All' || data.site === site) &&
-                (productionLine === 'All' || data.line === productionLine)
+                (filters.site === 'All' || data.site === filters.site) &&
+                (filters.productionLine === 'All' || data.line === filters.productionLine)
             );
         });
-
-        // Return unique machine names from the filtered data
         return ['All', ...new Set(filterCondition.map((data) => data.machineId))];
-    }, []);
+    }, [filters.site, filters.productionLine]);
 
     // Effect to update productionLine options when site changes
     useEffect(() => {
         if (filters.site !== 'All') {
-            const compatibleLines = getCompatibleProductionLines(filters.site);
-            if (!compatibleLines.includes(filters.productionLine)) {
+            if (!compatibleProductionLines.includes(filters.productionLine)) {
                 onChange({ ...filters, productionLine: 'All', machines: 'All' });
             }
         }
-    }, [filters, getCompatibleProductionLines, onChange]);
+    }, [filters, compatibleProductionLines, onChange]);
 
     // Effect to update machines options when productionLine changes
     useEffect(() => {
         if (filters.site !== 'All' && filters.productionLine !== 'All') {
-            const compatibleMachines = getCompatibleMachines(filters.site, filters.productionLine);
             if (!compatibleMachines.includes(filters.machines)) {
                 onChange({ ...filters, machines: 'All' });
             }
         }
-    }, [filters, getCompatibleMachines, onChange]);
+    }, [filters, compatibleMachines, onChange]);
 
     const updateFilter = (key: keyof typeof filters, value: string) => {
         onChange({ ...filters, [key]: value });
@@ -99,8 +91,8 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange }) => {
                                     value={filters.productionLine}
                                     onChange={(e) => updateFilter('productionLine', e.target.value)}
                                 >
-                                    {getCompatibleProductionLines(filters.site).map((line) => (
-                                        <option key={line} value={line}>
+                                    {compatibleProductionLines.map((line, index) => (
+                                        <option key={`${line}-${index}`} value={line}>
                                             {line}
                                         </option>
                                     ))}
@@ -115,8 +107,8 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange }) => {
                                     value={filters.machines}
                                     onChange={(e) => updateFilter('machines', e.target.value)}
                                 >
-                                    {getCompatibleMachines(filters.site, filters.productionLine).map((machine) => (
-                                        <option key={machine} value={machine}>
+                                    {compatibleMachines.map((machine, index) => (
+                                        <option key={`${machine}-${index}`} value={machine}>
                                             {machine}
                                         </option>
                                     ))}
@@ -124,7 +116,8 @@ const FilterOptions: React.FC<FilterOptionsProps> = ({ filters, onChange }) => {
                             </div>
                         </div>
                     </div>
-                </div>)}
+                </div>
+            )}
         </div>
     );
 };

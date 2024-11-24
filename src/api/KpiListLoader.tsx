@@ -32,4 +32,5 @@ const KpiListLoader: React.FC<{ children: (kpiList: KpiList) => React.ReactNode 
     }
 ;
 
+
 export default KpiListLoader;

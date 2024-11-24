@@ -16,7 +16,7 @@ const SidebarSection: React.FC<SidebarSectionProps> = ({title, items}) => (
                     icon={item.icon}
                     text={item.text}
                     path={item.path}
-                    nested={item.nested}
+                    folder={item.folder}
                 />
             ))}
         </div>

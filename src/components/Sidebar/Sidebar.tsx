@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import SidebarSection from './SidebarSection';
-import {mockDashboards} from "../Home";
-import {DashboardFolder, DashboardPointer} from "../../api/DataStructures";
+import {DashboardFolder} from "../../api/DataStructures";
 import {SidebarItemProps} from "./SidebarItem";
 
 export const pointIcon = 'https://cdn.builder.io/api/v1/image/assets/TEMP/e4f31bc08d7f9cce9aa4820b2adc97643d3b0c001526273b80178ee6bf890b69?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130';
@@ -50,7 +49,8 @@ const DashboardSidebar: React.FC = () => {
             formatted.push({
                 text: folder.name,
                 path: currentPath,  // Path will be the folder ID
-                icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/eaf772e37067af09780cab33ecbf00699526f2539b536d7e2dac43b2122526b2?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130'
+                icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/eaf772e37067af09780cab33ecbf00699526f2539b536d7e2dac43b2122526b2?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',
+                folder: true
             });
 
             // Recursively format children
@@ -58,15 +58,12 @@ const DashboardSidebar: React.FC = () => {
                 if (child instanceof DashboardFolder) {
                     // Recursively process child folders
                     formatted.push(...formatDashboards([child]));
-                } else {
-                    { // Add pointers (endpoints) directly
-                        formatted.push({
-                            text: child.name,
-                            path: `${currentPath}/${child.id}`,  // Append pointer ID to the path
-                            icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e4f31bc08d7f9cce9aa4820b2adc97643d3b0c001526273b80178ee6bf890b69?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',  // Use pointIcon for individual dashboards
-                            nested: true
-                        });
-                    }
+                } else { // Add pointers (endpoints) directly
+                    formatted.push({
+                        text: child.name,
+                        path: `${currentPath}/${child.id}`,  // Append pointer ID to the path
+                        icon: 'https://cdn.builder.io/api/v1/image/assets/TEMP/e4f31bc08d7f9cce9aa4820b2adc97643d3b0c001526273b80178ee6bf890b69?placeholderIfAbsent=true&apiKey=346cd8710f5247b5a829262d8409a130',  // Use pointIcon for individual dashboards
+                    });
                 }
             });
         });
