@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useLocation, Routes, Route, Navigate} from 'react-router-dom';
+import {Navigate, Route, Routes, useLocation} from 'react-router-dom';
 import {NotificationProvider, useNotification} from './Notification/Notification';
 import ChatAssistant from './ChatAssistant/ChatAssistant';
 import DashboardSidebar from './Sidebar/Sidebar';
@@ -16,6 +16,7 @@ import {addLogEntry, getLogsFromCookies, LogEntry} from '../utils/logs';
 import KpiViewer from "./KpiViewer/KpiViewer";
 import ReportSchedules from "./Reports/ReportSchedules";
 import Dashboard from "./Dashboard/Dashboard";
+import ProductionLineManager from "./Machines/ProductionLineManager";
 
 
 // Mock data for demonstration
@@ -120,6 +121,7 @@ const SmartFactory: React.FC<UserProps> = ({username, role, userAvatar}) => {
                         <Route path="log" element={<LogPage/>}/>
                         <Route path="kpis" element={<KpiViewer/>}/>
                         <Route path="forecasts" element={<Forecasting/>}/>
+                        <Route path="production-lines" element={<ProductionLineManager/>}/>
                         <Route path="reports" element={<ReportArchive/>}/>
                         <Route path="reports/schedules" element={<ReportSchedules/>}/>
                         <Route path="*" element={<Navigate to="/home" replace/>}/>
