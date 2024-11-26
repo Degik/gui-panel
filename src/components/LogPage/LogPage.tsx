@@ -1,50 +1,50 @@
-import React, { useState } from 'react';
+import React, {useState, useMemo} from 'react';
 import styles from './styles/LogPage.module.css';
-import { fetchLogs, markAsRead } from '../../api/LogService';
-import { FaInfoCircle, FaExclamationTriangle, FaTimesCircle } from 'react-icons/fa';
+import {fetchLogs, markAsRead} from '../../api/LogService';
+import {FaInfoCircle, FaExclamationTriangle, FaTimesCircle, FaChevronDown, FaChevronUp} from 'react-icons/fa';
 
 interface LogItem {
     id: number;
-    type: string; // Tipologia
-    header: string; // Header della notifica
-    body: string; // Corpo interno
-    isRead: boolean; // Stato della notifica
+    type: string;
+    header: string;
+    body: string;
+    isRead: boolean;
 }
 
 const LogPage: React.FC = () => {
     const [logs, setLogs] = useState<LogItem[]>(fetchLogs());
     const [expandedLog, setExpandedLog] = useState<number | null>(null);
-    const [filterType, setFilterType] = useState<string>('All'); // State for filter by type
-    const [filterReadStatus, setFilterReadStatus] = useState<string>('All'); // State for filter by read/unread status
+    const [filterType, setFilterType] = useState<string>('All');
+    const [filterReadStatus, setFilterReadStatus] = useState<string>('All');
 
-    // Handle the filter by type change
     const handleFilterTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFilterType(e.target.value);
     };
 
-    // Handle the filter by read/unread change
     const handleFilterReadStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         setFilterReadStatus(e.target.value);
     };
 
-    // Filter the logs based on the selected filter type and read/unread status
-    const filteredLogs = logs.filter(log => {
-        const matchesType = filterType === 'All' || log.type === filterType;
-        const matchesReadStatus = filterReadStatus === 'All'
-            || (filterReadStatus === 'Read' && log.isRead)
-            || (filterReadStatus === 'Unread' && !log.isRead);
-
-        return matchesType && matchesReadStatus;
-    });
+    const filteredLogs = useMemo(
+        () =>
+            logs.filter((log) => {
+                const matchesType = filterType === 'All' || log.type === filterType;
+                const matchesReadStatus =
+                    filterReadStatus === 'All' ||
+                    (filterReadStatus === 'Read' && log.isRead) ||
+                    (filterReadStatus === 'Unread' && !log.isRead);
+                return matchesType && matchesReadStatus;
+            }),
+        [logs, filterType, filterReadStatus]
+    );
 
     const handleExpand = (id: number) => {
-        setExpandedLog(expandedLog === id ? null : id);
-        if (!logs.find(log => log.id === id)?.isRead) {
+        setExpandedLog((prev) => (prev === id ? null : id));
+        const targetLog = logs.find((log) => log.id === id);
+        if (targetLog && !targetLog.isRead) {
             markAsRead(id);
             setLogs((prevLogs) =>
-                prevLogs.map((log) =>
-                    log.id === id ? { ...log, isRead: true } : log
-                )
+                prevLogs.map((log) => (log.id === id ? {...log, isRead: true} : log))
             );
         }
     };
@@ -52,23 +52,21 @@ const LogPage: React.FC = () => {
     const getIcon = (type: string) => {
         switch (type) {
             case 'Info':
-                return <FaInfoCircle className={styles.iconInfo} />;
+                return <FaInfoCircle className={styles.iconInfo}/>;
             case 'Warning':
-                return <FaExclamationTriangle className={styles.iconWarning} />;
+                return <FaExclamationTriangle className={styles.iconWarning}/>;
             case 'Error':
-                return <FaTimesCircle className={styles.iconError} />;
+                return <FaTimesCircle className={styles.iconError}/>;
             default:
                 return null;
         }
     };
 
     return (
-        <div className={styles.logPage}>
+        <div className="bg-white flex-col rounded-lg shadow-lg w-auto max-w-5xl mx-auto px-6 pt-3">
             <h1 className={styles.title}>Log Notifications</h1>
 
-            {/* Filter Selector for Type and Read/Unread Status */}
-            <div className="mb-4 flex space-x-4">
-                {/* Filter by Type */}
+            <div className="mb-4 flex space-x-4 font-semibold">
                 <div>
                     <label htmlFor="logFilterType" className="text-sm font-medium text-gray-700">
                         Filter by Type:
@@ -86,10 +84,9 @@ const LogPage: React.FC = () => {
                     </select>
                 </div>
 
-                {/* Filter by Read/Unread Status */}
                 <div>
                     <label htmlFor="logFilterReadStatus" className="text-sm font-medium text-gray-700">
-                        Filter by Status:
+                        Show:
                     </label>
                     <select
                         id="logFilterReadStatus"
@@ -104,33 +101,56 @@ const LogPage: React.FC = () => {
                 </div>
             </div>
 
-            {/* Filtered log list */}
-            <ul className={styles.logList}>
+            <div className="text-start p-5" role="list">
                 {filteredLogs.map((log) => (
-                    <li
+                    <div
                         key={log.id}
-                        className={`${styles.logItem} ${log.isRead ? styles.read : styles.unread}`}
+                        className={`border rounded-lg p-4 mb-4 cursor-pointer transition-transform transform hover:scale-105 ${log.isRead
+                            ? 'bg-gray-50  text-gray-500' // Faded gray for read
+                            : 'bg-white text-gray-800'   // Clean white for unread 
+                        }`}
+                        role="listitem"
                     >
-                        <div className={styles.logHeader} onClick={() => handleExpand(log.id)}>
-                            <div className={styles.iconContainer}>{getIcon(log.type)}</div>
-                            <div className={styles.textContainer}>
-                                <span className={styles.logHeaderText}>{log.header}</span>
-                                <span className={styles.logType}>{log.type}</span>
+                        <div
+                            className="flex items-center justify-between"
+                            onClick={() => handleExpand(log.id)}
+                            role="button"
+                            aria-expanded={expandedLog === log.id}
+                        >
+                            {/* Icon */}
+                            <div className="flex items-center space-x-4">
+                                {getIcon(log.type)}
+                                <div className="flex flex-col">
+                                    <span className="text-lg font-semibold ">{log.header}</span>
+                                    <span className={log.isRead
+                            ? "text-sm text-gray-400 font-normal" : "text-sm text-gray-500"}>{log.type}</span>
+                                </div>
                             </div>
-                            <span className={styles.expandToggle}>
-                                {expandedLog === log.id ? '-' : '+'}
-                            </span>
+
+                            {/* Status and Expand Toggle */}
+                            <div className="flex items-center space-x-4">
+                                {!log.isRead && (
+                                    <span className="w-3 h-3 bg-blue-500 rounded-full"></span>
+                                )}
+                                <span className="text-gray-600">
+                        {expandedLog === log.id ? <FaChevronUp/> : <FaChevronDown/>}
+                    </span>
+                            </div>
                         </div>
+
+                        {/* Expanded Body */}
                         {expandedLog === log.id && (
-                            <div className={styles.logBody}>
+                            <div className="mt-4 text-gray-600 font-normal">
                                 <p>{log.body}</p>
                             </div>
                         )}
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
+
         </div>
-    );
+    )
+        ;
 };
 
 export default LogPage;

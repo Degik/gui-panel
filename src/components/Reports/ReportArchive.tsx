@@ -46,7 +46,7 @@ const ReportArchive: React.FC = () => {
         });
 
     return (
-        <div className="ReportArchive max-w-6xl mx-auto p-6   bg-gray-50 rounded-lg shadow-lg">
+        <div className="ReportArchive max-w-6xl mx-auto p-6 bg-gray-50 rounded-lg shadow-lg">
             <h1 className="text-2xl font-bold mb-4 text-gray-800">Report Archive</h1>
 
             {/* Filter and Sort Controls */}
