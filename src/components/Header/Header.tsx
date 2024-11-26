@@ -78,7 +78,7 @@ const Header: React.FC<HeaderProps> = ({ path, userAvatar, userName, role }) => 
                     />
                 </button>
                 <img
-                    src={userAvatar}
+                    src={require('./icon/avatar_32_32.svg').default}
                     alt="User Avatar"
                     className="w-8 h-8 rounded-full mr-2"
                 />
