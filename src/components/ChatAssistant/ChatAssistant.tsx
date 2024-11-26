@@ -40,7 +40,7 @@ const ChatAssistant: React.FC = () => {
         {/* Chat Toggle Button */}
         {!isChatOpen && (
             <button
-              className="border border-gray-400 text-black w-fit h-fit pt-3 pb-3 p-4 mx-auto pd-2 bg-white-600 text-white rounded-full shadow-md flex items-center justify-center hover:scale-110 transition-transform"
+              className="border border-gray-400 text-black w-fit h-fit pt-3 pb-3 p-4 mx-auto pd-2 bg-white-600 rounded-full shadow-md flex items-center justify-center hover:scale-110 transition-transform"
               onClick={toggleChat}
               aria-label="Open chat"
             >
