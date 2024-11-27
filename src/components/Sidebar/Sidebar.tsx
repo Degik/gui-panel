@@ -34,8 +34,8 @@ const DashboardSidebar: React.FC = () => {
             text: 'Production Lines',
             path: '/production-lines'
         },
-        {icon: './icons/kpi.svg', text: 'KPIs', path: '/kpis'},
-        {icon: './icons/forecast.svg', text: 'Forecasting', path: '/forecasts'},
+        {icon: '/icons/kpi.svg', text: 'KPIs', path: '/kpis'},
+        {icon: '/icons/forecast.svg', text: 'Forecasting', path: '/forecasts'},
     ];
 
     const formatDashboards = (folders: DashboardFolder[]): SidebarItemProps[] => {
