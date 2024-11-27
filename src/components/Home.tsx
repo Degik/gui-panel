@@ -112,7 +112,7 @@ const SmartFactory: React.FC<UserProps> = ({username, role, userAvatar}) => {
                     </div> */}
 
                     <Routes>
-                        <Route path="/" element={<Navigate to="home" replace/>}/>
+                        <Route path="/" element={<Navigate to="dashboards/overview" replace/>}/>
                         <Route path="home" element={<Home/>}/>
                         <Route path="dashboards/:dashboardId" element={<Dashboard/>}/>
                         <Route path="dashboards/:dashboardPath/:dashboardId" element={<Dashboard/>}/>
