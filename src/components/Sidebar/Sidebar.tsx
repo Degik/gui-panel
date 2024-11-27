@@ -15,7 +15,7 @@ const DashboardSidebar: React.FC = () => {
             path: '/user-settings'
         },
         {
-            icon: 'icons/log.svg',
+            icon: '/icons/log.svg',
             text: 'Reports',
             path: '/reports'
         },
@@ -25,7 +25,7 @@ const DashboardSidebar: React.FC = () => {
             path: '/data-view'
         },
         {
-            icon: 'icons/log.svg',
+            icon: '/icons/log.svg',
             text: 'Log',
             path: '/log'
         },
